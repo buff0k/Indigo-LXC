@@ -228,8 +228,16 @@ I use Gunicorn on my LXC deployment which hosts the page internally, publicly it
 
 The following script will execute Gunicorn and start listening for https traffic on port 8000 (Note, it must be run from the /root/indigo folder):
 ```bash
-Gunicorn Notes: --worker-class or -k : What kind of worker (use gevent) -t : timeout (use 600ms for now) --bind or -b : Bind to address:port (use 0.0.0.0:8000) --workers or -w : How many workers (use 8 - 2x cores) --threads : How many threads per worker (Use 8 - 2x cores) -D : Run as daemon (Background Service) --limit-request-line : Length of request line (set to 0)
+gunicorn indigo.wsgi:application -k=gevent -t 600 --certfile=/root/indigo/server.crt --keyfile=/root/indigo/server.key -b=0.0.0.0:8000 -w=16 --threads 16 --forwarded-allow-ips=* --proxy-allow-from=* --limit-request-line 0
 ```
+To understand each of these arguments:
+--worker-class or -k : What kind of worker (use gevent)
+-t : timeout (use 600ms for now)
+--bind or -b : Bind to address:port (use 0.0.0.0:8000)
+--workers or -w : How many workers (use 8 - 2x cores)
+--threads : How many threads per worker (Use 8 - 2x cores)
+-D : Run as daemon (Background Service)
+--limit-request-line : Length of request line (set to 0)
 
 You can now connect to your Indigo Server on https://your_ip:8000
 
