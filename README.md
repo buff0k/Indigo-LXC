@@ -315,10 +315,110 @@ supervisorctl restart indigo
 ```
 And voila, Supervisor will now start your Indigo Gunicorn server at bootup
 
+## Manual Update of Indigo (Very long-winded, essentially reinstalling, anyone want to add an easier way, please do):
+
+I am assuming that you are operting from your root folder and not the indigo installation folder (/root/). This might break your indigo installation, do not proceed unless you have a current backup as these steps are destructive.
+
+1. Stop the indigo app in supervisor (If you are using the automated method for booting indigo in this tutorial):
+```bash
+supervisorctl stop indigo
+```
+2. Let's backup our configurations, this will make life easier later:
+```bash
+cp ./indigo/indigo/settings.py settings.py.bak
+```
+```bash
+cp ./indigo/server.crt server.crt.bak
+```
+```bash
+cp ./indigo/server.key server.key.bak
+```
+```bash
+cp ./indigo/gunicorn_configuraton gunicorn_configuration.bak
+```
+3. Now, since the only "custom" data is stored in AWS, your Postgres DB and your settings.py file, we delete the indigo folder:
+```bash
+rm -rf indigo/
+```
+4. And now we clone the latest version of indigo from GitHub:
+```bash
+git clone https://github.com/laws-africa/indigo
+```
+5. We need to now install any updated dependencies which is similar to how we originally installed Indigo:
+```bash
+cd indigo
+```
+```bash
+pip install -e .
+```
+```bash
+gem install bundler
+```
+```bash
+bundle install
+```
+6. Now we need to reconfigure our settings.py file (With the same settings we used in our initial installation, good thing we made a backup of this file to reference. Don't replace the new settings.py file with the old one, this might break some changes that the developers introduced.
+```bash
+nano ./indigo/settings.py
+```
+And edit the file noting to change the specific settings you did in your initial configuration above. This is important.
+7. Return to the root folder:
+```bash
+cd
+```
+8. Copy back all your backed up files, except settings.py:
+```bash
+cp server.crt.bak ./indigo/server.crt
+```
+```bash
+cp server.key.bak ./indigo/server.key
+```
+```bash
+cp gunicorn_configuration.bak ./indigo/gunicorn_configuration
+```
+9. Go back to the indigo folder:
+```bash
+cd indigo
+```
+10. Make the gunicorn_configuration file executable again:
+```bash
+chmod u+x gunicorn_configuration
+```
+11. Update the relevant database fields and rebuild static files:
+```bash
+python3 manage.py makemigrations
+```
+```bash
+python3 manage.py migrate
+```
+```bash
+python3 manage.py update_countries_plus
+```
+```bash
+python3 manage.py loaddata languages_data.json.gz
+```
+```bash
+python3 manage.py compilescss
+```
+```bash
+python3 manage.py collectstatic --noinput -i docs -i \*scss 2>&1
+```
+12. Re-enable the supervisor app:
+```bash
+supervisorctl reread
+```
+```bash
+supervisorctl update
+```
+```bash
+supervisorctl restart indigo
+```
+And if all worked well, you now have an up-to-date installation of Indigo.
+
 ## To Do!
 
 1. Automate Gunicorn to start at system boot, no clue how to get this to properly work, if someone could assist here it would be great (Currently testing)
 
-2. Updating, while this could work with a simple GIT Fetch, the fact that you NEED to change settings.py makes this more difficult. Will optimize this once I get time.
+2. Updating, while this could work with a simple GIT Fetch, the fact that you NEED to change settings.py makes this more difficult. Will optimize this once I get time. For now I have added manual steps which essentially require reinstalling Indigo from the latest git.
 
  
