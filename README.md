@@ -241,9 +241,83 @@ To understand each of these arguments:
 
 You can now connect to your Indigo Server on https://your_ip:8000
 
+## Use Supervisor to automate server startup (Testing)
+
+Through significant trial and error, some walkthroughs and dumb luck, I managed to get supervisor to autostart gunicorn, so to make this work, do the following:
+
+1. Install Supervisor
+```bash
+apt update && apt install supervisor -y
+```
+2. Enter the indigo installation folder to create a gunicorn_config file
+```bash
+cd /root/nano
+```
+```bash
+touch gunicorn_configuration
+```
+```bash
+nano gunicorn_configuration
+```
+And make it look like this (Substiute folder paths if you are not using root):
+```bash
+#!/bin/bash
+NAME="Indigo"  #Django application name
+DIR=/root/indigo   #Directory where project is located
+USER=root   #User to run this script as
+GROUP=root  #Group to run this script as
+DJANGO_SETTINGS_MODULE=indigo.settings   #Which Django setting file should use
+DJANGO_WSGI_MODULE=indigo.wsgi           #Which WSGI file should use
+LOG_LEVEL=debug
+cd $DIR
+export DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
+export PYTHONPATH=$DIR:$PYTHONPATH
+#Command to run the progam under supeperisor
+exec gunicorn --chdir /root/indigo indigo.wsgi:application -k=gevent -t 600 --certfile=/root/indigo/server.crt --keyfile=/root/indigo/server.key -b=0.0.0.0:8000 -w=16 --threads 16 --forwarded-allow-ips=* --proxy-allow-from=* --limit-request-line 0 --log-level=debug --log-file=-
+```
+3. Make this file executable:
+```bash
+chmod u+x gunicorn_configuration
+```
+4. Configure Supervisor to start with systemd
+```bash
+systemctl enable supervisor
+```
+```bash
+systemctl start supervisor
+```
+5. Create a config file for Supervisor to use:
+```bash
+touch /etc/supervisor/conf.d/indigo.conf
+```
+```bash
+nano /etc/supervisor/conf.d/indigo.conf
+```
+And make it look like this:
+```bash
+[program:indigo]
+command=/root/indigo/gunicorn_configuration
+user=root
+autostart=true
+autorestart=true
+redirect_stderr=true
+stdout_logfile=/root/indigo/gunicorn-error.log
+```
+6. Enable and start your new Supervisor app:
+```bash
+supervisorctl reread
+```
+```bash
+supervisorctl update
+```
+```bash
+supervisorctl restart indigo
+```
+And voila, Supervisor will now start your Indigo Gunicorn server at bootup
+
 ## To Do!
 
-1. Automate Gunicorn to start at system boot, no clue how to get this to properly work, if someone could assist here it would be great.
+1. Automate Gunicorn to start at system boot, no clue how to get this to properly work, if someone could assist here it would be great (Currently testing)
 
 2. Updating, while this could work with a simple GIT Fetch, the fact that you NEED to change settings.py makes this more difficult. Will optimize this once I get time.
 
