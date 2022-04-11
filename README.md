@@ -251,7 +251,7 @@ apt update && apt install supervisor -y
 ```
 2. Enter the indigo installation folder to create a gunicorn_config file
 ```bash
-cd /root/nano
+cd /root/indigo
 ```
 ```bash
 touch gunicorn_configuration
