@@ -36,19 +36,12 @@ We should always start on a clean and updated Debian 11 install, as this include
  
  3. Create the postgres database:
 
- For this part we will use the database named indigo and user named indigo with password indigo. If you want to use anything else, you will need to also change the mapped fields in root/indigo/indigo/setings.py related to:
- ```bash
- nano /root/indigo/indigo/settings.py
- ```
- Edit the following line with your configuration (This could be better done through using the correct ENV variables and Django dj_database_url, will look into this):
- ```bash
- db_config = dj_database_url.config(default='postgres://indigo:indigo@localhost:5432/indigo')
- ```
+ For this part we will use the database named indigo and user named indigo with password indigo. If you want to use anything else, you will need to also change the DATABASE_URL variable in step 4. below:
  To create the database, as root:
  ```bash
  su - postgres -c 'createuser -d -P indigo'
  ```
- Either make the password indigo or see the notes above regarding settings.py
+ Either make the password indigo or make sure to configure the DATABASE_URL ENV variable in step 4 below:
  
  4. Set your ENV Variables that Indigo requires:
  
@@ -56,7 +49,7 @@ We should always start on a clean and updated Debian 11 install, as this include
  ```bash
  nano ~/.basrch
  ```
- And add the following fields (The parts in {Curly Brackets} need to match your system, note that AWS S3 is required for storing files:
+ And add the following fields (The parts in {Curly Brackets} need to match your system, note that AWS S3 is required for storing files, note the correct format for DATABASE_URL as postgres://USER:PASSWORD@HOST:PORT/DBNAME so if you change this, note that
  ```bash
  export DJANGO_DEBUG=false
  export DJANGO_SECRET_KEY={Some Random Characters}
@@ -73,6 +66,7 @@ We should always start on a clean and updated Debian 11 install, as this include
  export RECAPTCHA_PUBLIC_KEY={Your Google Recaptcha Key}
  export RECAPTCHA_PRIVATE_KEY={Your Google Recaptcha Key}
  export GOOGLE_ANALYTICS_ID={Your Google Analytics ID}
+ export DATABASE_URL={postgres://indigo:indigo@localhost:5432/indigo}
  ```
  Enable this
  ```bash
