@@ -259,7 +259,7 @@ touch gunicorn_configuration
 ```bash
 nano gunicorn_configuration
 ```
-And make it look like this (Substiute folder paths if you are not using root):
+And make it look like this (Substiute folder paths, user and group if you are not using root as per this example):
 ```bash
 #!/bin/bash
 NAME="Indigo"  #Django application name
@@ -420,5 +420,7 @@ And if all worked well, you now have an up-to-date installation of Indigo.
 1. Automate Gunicorn to start at system boot, no clue how to get this to properly work, if someone could assist here it would be great (Currently testing)
 
 2. Updating, while this could work with a simple GIT Fetch, the fact that you NEED to change settings.py makes this more difficult. Will optimize this once I get time. For now I have added manual steps which essentially require reinstalling Indigo from the latest git.
+
+3. Investigate using Python dotenv to parse ENV variables for Indigo from a .env file, this could open the door to a solution that doesn't require modifying settings.py if Laws-Africa would be willing migrate more settings to os.environ.get.
 
  
