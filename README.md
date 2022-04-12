@@ -54,7 +54,7 @@ We should always start on a clean and updated Debian 11 install, as this include
  export DJANGO_DEBUG=false
  export DJANGO_SECRET_KEY={Some Random Characters}
  export AWS_ACCESS_KEY_ID={Your AWS Key}
- export AWS_SECRET_ACCESS_{Your AWS Access ID}
+ export AWS_SECRET_ACCESS_KEY={Your AWS Access ID}
  export AWS_S3_BUCKET={The name of your AWS Bucket}
  export SUPPORT_EMAIL={Your admin email address}
  export DJANGO_DEFAULT_FROM_EMAIL={The email address Indigo will send mail from}
@@ -63,6 +63,7 @@ We should always start on a clean and updated Debian 11 install, as this include
  export DJANGO_EMAIL_HOST_PASSWORD={Your SMTP Configaration}
  export DJANGO_EMAIL_PORT={Your SMTP Configaration}
  export INDIGO_ORGANISATION='{Your Organization Name}'
+ export INDIGO_URL={Indogo Official URL}
  export RECAPTCHA_PUBLIC_KEY={Your Google Recaptcha Key}
  export RECAPTCHA_PRIVATE_KEY={Your Google Recaptcha Key}
  export GOOGLE_ANALYTICS_ID={Your Google Analytics ID}
