@@ -185,6 +185,7 @@ We should always start on a clean and updated Debian 11 install, as this include
  ```bash
  'NOTIFICATION_EMAIL_BACKGROUND': True,
  ```
+ See later in this tutorial to configure crontab to automate background tasks.
  
  2. Create / Update Database Tables
  ```bash
@@ -309,6 +310,40 @@ supervisorctl update
 supervisorctl restart indigo
 ```
 And voila, Supervisor will now start your Indigo Gunicorn server at bootup
+
+## Use Crontab to automate background tasks to run (Testing)
+
+Cron is used as an easy solution to run the manage.py process_tasks instruction. If you want to change how often it is done, you can use [crontab guru](https://crontab.guru/) to calculate the timings. To change the duration, the --duration switch is used to stop the task after x seconds. For this example we will run it every 30 minutes with a 60 second duration.
+
+1. Determine the format for the Cron timings with [crontab-guru](https://crontab.guru/) to run every 30 minutes:
+```bash
+*/30 * * * *
+```
+2. Determine the folder where your Python 3 executible is stored:
+```bash
+which python3
+```
+Which should return something like:
+```bash
+/usr/bin/python3
+```
+3. In our example, Indigo is installed in /root/indigo, so to determine our cron script, it will look like this:
+{Cron Timing} {Python 3 Path} {Indigo Path} {manage.py switches}:
+```bash
+*/30 * * * * /usr/bin/python3 /root/indigo/manage.py process_tasks --duration 60
+```
+4. Now we simply edit the crontab file with this instruction:
+```bash
+crontab -e
+```
+And select nano as editor.
+At the bottom of the file we add our expression, from the start of this step:
+```bash
+*/30 * * * * /usr/bin/python3 /root/indigo/manage.py process_tasks --duration 60
+```
+Save the file with ctrl+x and enter.
+
+Now, Cron should run the process_tasks instruction every 30 minutes for a duration of 60 seconds.
 
 ## Manual Update of Indigo (Very long-winded, essentially reinstalling, anyone want to add an easier way, please do):
 
