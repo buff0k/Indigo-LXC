@@ -41,6 +41,9 @@ We should always start on a clean and updated Debian 11 install, as this include
  ```bash
  su - postgres -c 'createuser -d -P indigo'
  ```
+ ```bash
+ su - postgres -c 'createdb indigo'
+ ```
  Either make the password indigo or make sure to configure the DATABASE_URL ENV variable in step 4 below:
  
  4. Set your ENV Variables that Indigo requires:
