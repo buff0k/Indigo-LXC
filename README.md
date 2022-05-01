@@ -31,7 +31,7 @@ We should always start on a clean and updated Debian 11 install, as this include
  
  2. Install the prerequisite packages:
  ```bash
- apt install git curl libssl-dev libreadline-dev zlib1g-dev autoconf bison build-essential libyaml-dev libreadline-dev libncurses5-dev libffi-dev libgdbm-dev xfonts-base xfonts-75dpi fontconfig xfonts-encodings xfonts-utils poppler-utils postgresql python3-pip libpq-dev libpoppler-dev sqlite3 libsqlite3-dev wkhtmltopdf libbz2-dev  --no-install-recommends -y
+ apt install git curl libssl-dev libreadline-dev zlib1g-dev autoconf bison build-essential libyaml-dev libreadline-dev libncurses5-dev libffi-dev libgdbm-dev xfonts-base xfonts-75dpi fontconfig xfonts-encodings xfonts-utils poppler-utils postgresql python3-pip libpq-dev libpoppler-dev sqlite3 libsqlite3-dev wkhtmltopdf libbz2-dev python3-dev --no-install-recommends -y
  ```
  
  3. Create the postgres database:
