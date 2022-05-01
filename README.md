@@ -47,7 +47,7 @@ We should always start on a clean and updated Debian 11 install, as this include
  
  Edit the bashrc file:
  ```bash
- nano ~/.basrch
+ nano ~/.bashrc
  ```
  And add the following fields (The parts in {Curly Brackets} need to match your system, note that AWS S3 is required for storing files, note the correct format for DATABASE_URL as postgres://USER:PASSWORD@HOST:PORT/DBNAME so if you change this, note that
  ```bash
