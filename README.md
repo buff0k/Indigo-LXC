@@ -169,8 +169,8 @@ Due to the requirements of django-background-task, we are limited to Python 3.7.
  su - postgres -c 'createdb indigo'
  ```
 ```bash
- su - postgres -c 'createuser -d -P indigo'
- ```
+su - postgres -c 'createuser -d -P indigo'
+```
  Either make the password indigo or make sure to configure the DATABASE_URL ENV variable in step 4 below:
  
  ### Set your ENV Variables that Indigo requires:
