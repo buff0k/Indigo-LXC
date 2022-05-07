@@ -34,50 +34,6 @@ We should always start on a clean and updated Debian 11 install, as this include
  apt install git curl libssl-dev libreadline-dev zlib1g-dev autoconf bison build-essential libyaml-dev libreadline-dev libncurses5-dev libffi-dev libgdbm-dev xfonts-base xfonts-75dpi fontconfig xfonts-encodings xfonts-utils poppler-utils postgresql python3-pip libpq-dev libpoppler-dev sqlite3 libsqlite3-dev wkhtmltopdf libbz2-dev python3-dev --no-install-recommends -y
  ```
  
- 3. Create the postgres database:
-
- For this part we will use the database named indigo and user named indigo with password indigo. If you want to use anything else, you will need to also change the DATABASE_URL variable in step 4. below:
- To create the database and user, as root:
- ```bash
- su - postgres -c 'createdb indigo'
- ```
-```bash
- su - postgres -c 'createuser -d -P indigo'
- ```
- Either make the password indigo or make sure to configure the DATABASE_URL ENV variable in step 4 below:
- 
- 4. Set your ENV Variables that Indigo requires:
- 
- Edit the bashrc file:
- ```bash
- nano ~/.bashrc
- ```
- And add the following fields (The parts in {Curly Brackets} need to match your system, note that AWS S3 is required for storing files, note the correct format for DATABASE_URL as postgres://USER:PASSWORD@HOST:PORT/DBNAME so if you change this, note that
- ```bash
- export DJANGO_DEBUG=false
- export DJANGO_SECRET_KEY={Some Random Characters}
- export AWS_ACCESS_KEY_ID={Your AWS Key}
- export AWS_SECRET_ACCESS_KEY={Your AWS Access ID}
- export AWS_S3_BUCKET={The name of your AWS Bucket}
- export SUPPORT_EMAIL={Your admin email address}
- export DJANGO_DEFAULT_FROM_EMAIL={The email address Indigo will send mail from}
- export DJANGO_EMAIL_HOST={Your SMTP Configaration}
- export DJANGO_EMAIL_HOST_USER={Your SMTP Configaration}
- export DJANGO_EMAIL_HOST_PASSWORD={Your SMTP Configaration}
- export DJANGO_EMAIL_PORT={Your SMTP Configaration}
- export INDIGO_ORGANISATION='{Your Organization Name}'
- export INDIGO_URL={Indogo Official URL}
- export RECAPTCHA_PUBLIC_KEY={Your Google Recaptcha Key}
- export RECAPTCHA_PRIVATE_KEY={Your Google Recaptcha Key}
- export GOOGLE_ANALYTICS_ID={Your Google Analytics ID}
- export DATABASE_URL={postgres://indigo:indigo@localhost:5432/indigo}
- ```
- Enable this
- ```bash
- source ~/.bashrc
- ```
- 
- 
 ## Install Rbenv and Ruby version 2.7.2 (Officially current Ruby version of the Indigo Project):
 
  1. Install Rbenv
@@ -121,6 +77,8 @@ We should always start on a clean and updated Debian 11 install, as this include
  ruby -v
  ```
  Which should show Ruby version 2.7.2
+
+### Install PyEnv and Python 3.8
  
 ### Configure Pythons PIP and install some requirements
 
@@ -149,6 +107,49 @@ We should always start on a clean and updated Debian 11 install, as this include
  ```
  ```bash
  pip install psycopg2==2.8.6
+ ```
+
+ ### Create the postgres database:
+
+ For this part we will use the database named indigo and user named indigo with password indigo. If you want to use anything else, you will need to also change the DATABASE_URL variable in step 4. below:
+ To create the database and user, as root:
+ ```bash
+ su - postgres -c 'createdb indigo'
+ ```
+```bash
+ su - postgres -c 'createuser -d -P indigo'
+ ```
+ Either make the password indigo or make sure to configure the DATABASE_URL ENV variable in step 4 below:
+ 
+ ### Set your ENV Variables that Indigo requires:
+ 
+ Edit the bashrc file:
+ ```bash
+ nano ~/.bashrc
+ ```
+ And add the following fields (The parts in {Curly Brackets} need to match your system, note that AWS S3 is required for storing files, note the correct format for DATABASE_URL as postgres://USER:PASSWORD@HOST:PORT/DBNAME so if you change this, note that
+ ```bash
+ export DJANGO_DEBUG=false
+ export DJANGO_SECRET_KEY={Some Random Characters}
+ export AWS_ACCESS_KEY_ID={Your AWS Key}
+ export AWS_SECRET_ACCESS_KEY={Your AWS Access ID}
+ export AWS_S3_BUCKET={The name of your AWS Bucket}
+ export SUPPORT_EMAIL={Your admin email address}
+ export DJANGO_DEFAULT_FROM_EMAIL={The email address Indigo will send mail from}
+ export DJANGO_EMAIL_HOST={Your SMTP Configaration}
+ export DJANGO_EMAIL_HOST_USER={Your SMTP Configaration}
+ export DJANGO_EMAIL_HOST_PASSWORD={Your SMTP Configaration}
+ export DJANGO_EMAIL_PORT={Your SMTP Configaration}
+ export INDIGO_ORGANISATION='{Your Organization Name}'
+ export INDIGO_URL={Indogo Official URL}
+ export RECAPTCHA_PUBLIC_KEY={Your Google Recaptcha Key}
+ export RECAPTCHA_PRIVATE_KEY={Your Google Recaptcha Key}
+ export GOOGLE_ANALYTICS_ID={Your Google Analytics ID}
+ export DATABASE_URL={postgres://indigo:indigo@localhost:5432/indigo}
+ ```
+ Enable this
+ ```bash
+ source ~/.bashrc
  ```
 
 ## Now let's install Indigo
