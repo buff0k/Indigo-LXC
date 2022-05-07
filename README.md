@@ -31,7 +31,7 @@ We should always start on a clean and updated Debian 11 install, as this include
  
  2. Install the prerequisite packages:
  ```bash
- apt install git curl libssl-dev libreadline-dev zlib1g-dev autoconf bison build-essential libyaml-dev libreadline-dev libncurses5-dev libffi-dev libgdbm-dev xfonts-base xfonts-75dpi fontconfig xfonts-encodings xfonts-utils poppler-utils postgresql python3-pip libpq-dev libpoppler-dev sqlite3 libsqlite3-dev wkhtmltopdf libbz2-dev python3-dev --no-install-recommends -y
+ apt install git curl libssl-dev libreadline-dev zlib1g-dev autoconf bison build-essential libyaml-dev libreadline-dev libncurses5-dev libffi-dev libgdbm-dev xfonts-base xfonts-75dpi fontconfig xfonts-encodings xfonts-utils poppler-utils postgresql python3-pip libpq-dev libpoppler-dev sqlite3 libsqlite3-dev wkhtmltopdf libbz2-dev python3-dev make zlib1g-dev libreadline-dev llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev --no-install-recommends -y
  ```
  
 ## Install Rbenv and Ruby version 2.7.2 (Officially current Ruby version of the Indigo Project):
@@ -79,6 +79,51 @@ We should always start on a clean and updated Debian 11 install, as this include
  Which should show Ruby version 2.7.2
 
 ### Install PyEnv and Python 3.8
+
+ 1. Install PyEnv
+ 
+ Use the Curl script:
+ ```bash
+ curl -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer | bash
+ ```
+
+ 2. After the installation, rbenv needs some configurations to system ENV, so:
+ ```bash
+ nano ~/.bashrc
+ ```
+ and add the following at the end of the file:
+ ```bash
+ export PYENV_ROOT="$HOME/.pyenv"
+ command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+ eval "$(pyenv init -)"
+ ```
+ 
+ 3. Now enable the local ENV Vars:
+ ```bash
+ source ~/.bashrc
+ ```
+
+ 4. Test pyenv:
+ ```bash
+ pyenv -v
+ ```
+ Which should return your pyenv version
+ 
+ 5. Install Python 3.8.13
+ ```bash
+ pyenv install 3.8.13
+ ```
+ 
+ 5. Set Python 3.8.13 as your global Python version:
+ ```bash
+ pyenv local 3.8.13
+ ```
+ 
+ 6. Test your Python installation:
+ ```bash
+ python --version
+ ```
+ Which should show Python version 3.8.13
  
 ### Configure Pythons PIP and install some requirements
 
