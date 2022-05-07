@@ -37,12 +37,12 @@ We should always start on a clean and updated Debian 11 install, as this include
  3. Create the postgres database:
 
  For this part we will use the database named indigo and user named indigo with password indigo. If you want to use anything else, you will need to also change the DATABASE_URL variable in step 4. below:
- To create the database, as root:
- ```bash
- su - postgres -c 'createuser -d -P indigo'
- ```
+ To create the database and user, as root:
  ```bash
  su - postgres -c 'createdb indigo'
+ ```
+```bash
+ su - postgres -c 'createuser -d -P indigo'
  ```
  Either make the password indigo or make sure to configure the DATABASE_URL ENV variable in step 4 below:
  
