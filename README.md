@@ -163,48 +163,24 @@ Due to the requirements of django-background-task, we are limited to Python 3.7.
 
  ### Create the postgres database:
 
- For this part we will use the database named indigo and user named indigo with password indigo. If you want to use anything else, you will need to also change the DATABASE_URL variable in step 4. below:
- To create the database and user, as root:
+ For this part we will use the database named indigo and user named indigo with password indigo. If you want to use anything else, you will need to also change the DATABASE_URL variable below:
+ The correct format for DATABASE_URL as postgres://USER:PASSWORD@HOST:PORT/DBNAME so if you change this, note that you should also substite the relevant commands below. To create the database and user, as root:
  ```bash
  su - postgres -c 'createdb indigo'
  ```
 ```bash
 su - postgres -c 'createuser -d -P indigo'
 ```
- Either make the password indigo or make sure to configure the DATABASE_URL ENV variable in step 4 below:
- 
- ### Set your ENV Variables that Indigo requires:
- 
- Edit the bashrc file:
- ```bash
- nano ~/.bashrc
- ```
- And add the following fields (The parts in {Curly Brackets} need to match your system, note that AWS S3 is required for storing files, note the correct format for DATABASE_URL as postgres://USER:PASSWORD@HOST:PORT/DBNAME so if you change this, note that
- ```bash
- export DJANGO_DEBUG=false
- export DJANGO_SECRET_KEY={Some Random Characters}
- export AWS_ACCESS_KEY_ID={Your AWS Key}
- export AWS_SECRET_ACCESS_KEY={Your AWS Access ID}
- export AWS_S3_BUCKET={The name of your AWS Bucket}
- export SUPPORT_EMAIL={Your admin email address}
- export DJANGO_DEFAULT_FROM_EMAIL={The email address Indigo will send mail from}
- export DJANGO_EMAIL_HOST={Your SMTP Configaration}
- export DJANGO_EMAIL_HOST_USER={Your SMTP Configaration}
- export DJANGO_EMAIL_HOST_PASSWORD={Your SMTP Configaration}
- export DJANGO_EMAIL_PORT={Your SMTP Configaration}
- export INDIGO_ORGANISATION='{Your Organization Name}'
- export INDIGO_URL={Indogo Official URL}
- export RECAPTCHA_PUBLIC_KEY={Your Google Recaptcha Key}
- export RECAPTCHA_PRIVATE_KEY={Your Google Recaptcha Key}
- export GOOGLE_ANALYTICS_ID={Your Google Analytics ID}
- export DATABASE_URL={postgres://indigo:indigo@localhost:5432/indigo}
+ If your db name, username and password are not indigo, make sure to configure the DATABASE_URL ENV variable  as follows:
+  ```bash
+ echo 'export DATABASE_URL={postgres://indigo:indigo@localhost:5432/indigo}' >> ~/.bashrc
  ```
  Enable this
  ```bash
  source ~/.bashrc
  ```
-
-## Now let's install Indigo
+ 
+ ## Now let's install Indigo
 
  1. Let's clone into the current Indigo Master Branch:
  ```bash
@@ -292,6 +268,37 @@ To understand each of these arguments:
 --limit-request-line : Length of request line (set to 0)
 
 You can now connect to your Indigo Server on https://your_ip:8000
+
+### Set your ENV Variables that Indigo requires for development:
+ 
+ Edit the bashrc file:
+ ```bash
+ nano ~/.bashrc
+ ```
+ And add the following fields (The parts in {Curly Brackets} need to match your system, note that AWS S3 is required for storing files
+ ```bash
+ export DJANGO_DEBUG=false
+ export DJANGO_SECRET_KEY={Some Random Characters}
+ export AWS_ACCESS_KEY_ID={Your AWS Key}
+ export AWS_SECRET_ACCESS_KEY={Your AWS Access ID}
+ export AWS_S3_BUCKET={The name of your AWS Bucket}
+ export SUPPORT_EMAIL={Your admin email address}
+ export DJANGO_DEFAULT_FROM_EMAIL={The email address Indigo will send mail from}
+ export DJANGO_EMAIL_HOST={Your SMTP Configaration}
+ export DJANGO_EMAIL_HOST_USER={Your SMTP Configaration}
+ export DJANGO_EMAIL_HOST_PASSWORD={Your SMTP Configaration}
+ export DJANGO_EMAIL_PORT={Your SMTP Configaration}
+ export INDIGO_ORGANISATION='{Your Organization Name}'
+ export INDIGO_URL={Indogo Official URL}
+ export RECAPTCHA_PUBLIC_KEY={Your Google Recaptcha Key}
+ export RECAPTCHA_PRIVATE_KEY={Your Google Recaptcha Key}
+ export GOOGLE_ANALYTICS_ID={Your Google Analytics ID}
+ 
+ ```
+ Enable this
+ ```bash
+ source ~/.bashrc
+ ```
 
 ## Use Supervisor to automate server startup (Testing)
 
