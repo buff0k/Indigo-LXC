@@ -245,28 +245,28 @@ Due to the requirements of django-background-task, we are limited to Python 3.7.
  
  2. Create / Update Database Tables
  ```bash
- python3 manage.py migrate
+ python manage.py migrate
  ```
  
  3. Import Countries and Languages
  ```bash
- python3 manage.py update_countries_plus
+ python manage.py update_countries_plus
  ```
  ```bash
- python3 manage.py loaddata languages_data.json.gz
+ python manage.py loaddata languages_data.json.gz
  ```
  
  4. Create a Superuser account
  ```bash
- python3 manage.py createsuperuser
+ python manage.py createsuperuser
  ```
  
  5. Compile static files (Otherwise Gunicorn won't work):
  ```bash
- python3 manage.py compilescss
+ python manage.py compilescss
  ```
  ```bash
- python3 manage.py collectstatic --noinput -i docs -i \*scss 2>&1
+ python manage.py collectstatic --noinput -i docs -i \*scss 2>&1
  ```
  
  6. Create SSL Certificates (Could be done with certbot, but would also require changing the Gunicorn String and then requires public facing server):
@@ -377,16 +377,16 @@ Cron is used as an easy solution to run the manage.py process_tasks instruction.
 ```
 2. Determine the folder where your Python 3 executible is stored:
 ```bash
-which python3
+which python
 ```
 Which should return something like:
 ```bash
-/usr/bin/python3
+/root/.pyenv/shims/python
 ```
 3. In our example, Indigo is installed in /root/indigo, so to determine our cron script, it will look like this:
 {Cron Timing} {Python 3 Path} {Indigo Path} {manage.py switches}:
 ```bash
-*/30 * * * * /usr/bin/python3 /root/indigo/manage.py process_tasks --duration 60
+*/30 * * * * /root/.pyenv/shims/python /root/indigo/manage.py process_tasks --duration 60
 ```
 4. Now we simply edit the crontab file with this instruction:
 ```bash
@@ -395,7 +395,7 @@ crontab -e
 And select nano as editor.
 At the bottom of the file we add our expression, from the start of this step:
 ```bash
-*/30 * * * * /usr/bin/python3 /root/indigo/manage.py process_tasks --duration 60
+*/30 * * * * /root/.pyenv/shims/python /root/indigo/manage.py process_tasks --duration 60
 ```
 Save the file with ctrl+x and enter.
 
@@ -472,22 +472,22 @@ chmod u+x gunicorn_configuration
 ```
 11. Update the relevant database fields and rebuild static files:
 ```bash
-python3 manage.py makemigrations
+python manage.py makemigrations
 ```
 ```bash
-python3 manage.py migrate
+python manage.py migrate
 ```
 ```bash
-python3 manage.py update_countries_plus
+python manage.py update_countries_plus
 ```
 ```bash
-python3 manage.py loaddata languages_data.json.gz
+python manage.py loaddata languages_data.json.gz
 ```
 ```bash
-python3 manage.py compilescss
+python manage.py compilescss
 ```
 ```bash
-python3 manage.py collectstatic --noinput -i docs -i \*scss 2>&1
+python manage.py collectstatic --noinput -i docs -i \*scss 2>&1
 ```
 12. Re-enable the supervisor app:
 ```bash
