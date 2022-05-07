@@ -17,8 +17,9 @@ If you are asking that here, I think you are starting at the wrong place and I s
  5. [Poppler](https://poppler.freedesktop.org/) (PDF Rendering Library)
  7. [Ruby](https://www.ruby.org/) (Another popular Scripting Langauge)
  8. [RBENV](https://github.com/rbenv) (Simplified Ruby Management for Linux)
- 9. [Django](https://www.djangoproject.com) (A rich web platform)
- 10. [Indigo](https://github.com/laws-africa/indigo) (A specialized document management system)
+ 9. [PyEnv](https://github.com/pyenv/pyenv) (Simplified Python Management for Linux)
+ 10. [Django](https://www.djangoproject.com) (A rich web platform)
+ 11. [Indigo](https://github.com/laws-africa/indigo) (A specialized document management system)
 
 ## Getting started
 
@@ -154,6 +155,10 @@ Due to the requirements of django-background-task, we are limited to Python 3.7.
  ```
  ```bash
  pip install psycopg2==2.8.6
+ ```
+ Django Background Task (No idea why this is not automated)
+ ```bash
+ pip install django-background-task
  ```
 
  ### Create the postgres database:
