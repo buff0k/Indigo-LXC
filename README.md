@@ -78,7 +78,9 @@ We should always start on a clean and updated Debian 11 install, as this include
  ```
  Which should show Ruby version 2.7.2
 
-### Install PyEnv and Python 3.8
+### Install PyEnv and Python 3.7
+
+Due to the requirements of django-background-task, we are limited to Python 3.7.
 
  1. Install PyEnv
  
@@ -109,21 +111,21 @@ We should always start on a clean and updated Debian 11 install, as this include
  ```
  Which should return your pyenv version
  
- 5. Install Python 3.8.13
+ 5. Install Python 3.7.13
  ```bash
- pyenv install 3.8.13
+ pyenv install 3.7.13
  ```
  
- 5. Set Python 3.8.13 as your global Python version:
+ 5. Set Python 3.7.13 as your global Python version:
  ```bash
- pyenv local 3.8.13
+ pyenv local 3.7.13
  ```
  
  6. Test your Python installation:
  ```bash
  python --version
  ```
- Which should show Python version 3.8.13
+ Which should show Python version 3.7.13
  
 ### Configure Pythons PIP and install some requirements
 
