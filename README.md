@@ -20,6 +20,8 @@ If you are asking that here, I think you are starting at the wrong place and I s
  9. [PyEnv](https://github.com/pyenv/pyenv) (Simplified Python Management for Linux)
  10. [Django](https://www.djangoproject.com) (A rich web platform)
  11. [Indigo](https://github.com/laws-africa/indigo) (A specialized document management system)
+ 12. [NodJS](https://nodejs.org) (A JavaScript Runtime)
+ 13. [SASS](https://sass-lang.com) (CSS Extension Language)
 
 ## Getting started
 
