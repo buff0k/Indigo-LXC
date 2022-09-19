@@ -21,7 +21,8 @@ If you are asking that here, I think you are starting at the wrong place and I s
  10. [Django](https://www.djangoproject.com) (A rich web platform)
  11. [Indigo](https://github.com/laws-africa/indigo) (A specialized document management system)
  12. [NodJS](https://nodejs.org) (A JavaScript Runtime)
- 13. [SASS](https://sass-lang.com) (CSS Extension Language)
+ 13. [NPM](https://www.npmjs.com) (Java Pacakge Repo)
+ 14. [SASS](https://sass-lang.com) (CSS Extension Language)
 
 ## Getting started
 
@@ -130,6 +131,19 @@ Due to the requirements of django-background-task, we are limited to Python 3.7.
  ```
  Which should show Python version 3.7.13
  
+### Install NodJS and NPM
+
+ ```bash
+ apt install nodejs npm
+ ```
+ 
+### Install SASS
+
+ Install SASS
+ ```bash
+ npm install -g sass
+ ```
+
 ### Configure Pythons PIP and install some requirements
 
  1. Update PIP:
@@ -162,7 +176,10 @@ Due to the requirements of django-background-task, we are limited to Python 3.7.
  ```bash
  pip install django-background-task
  ```
-
+ Docpipe (Issues with the setup.py file and installation)
+ ```bash
+ pip install docpipe
+ ```
  ### Create the postgres database:
 
  For this part we will use the database named indigo and user named indigo with password indigo. If you want to use anything else, you will need to also change the DATABASE_URL variable below:
