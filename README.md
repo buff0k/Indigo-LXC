@@ -1,6 +1,6 @@
 # Indigo-LXC
 
-How to install [Laws-Africa/Indigo](https://gitbub.com/laws-africa/indigo) in an LXC Container for production use.
+How to install [Laws-Africa/Indigo](https://gihbub.com/laws-africa/indigo) in an LXC Container for production use.
 
 All credit and atribution to [Laws-Africa](https://github.com/laws-africa/) for their excellent work on the Indigo Platform.
 
