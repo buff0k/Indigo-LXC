@@ -228,6 +228,27 @@ su - postgres -c 'createuser -d -P indigo'
  ```bash
  openssl req -new -x509 -days 365 -nodes -out server.crt -keyout server.key
  ```
+  
+ 4. Make necessary changes to database tables (Makemigrations)
+ ```bash
+ python3 manage.py makemigrations
+ ```
+ 
+ 5. Update Database
+ ```bash
+ python3 manage.py migrate
+ ```
+ ```bash
+ python3 manage.py loaddata languages_data.json.gz
+ ```
+  
+ 6. Compile static files (Otherwise Gunicorn won't work):
+ ```bash
+ python3 manage.py compilescss
+ ```
+ ```bash
+ python3 manage.py collectstatic --noinput -i docs -i \*scss 2>&1
+ ```
 
 ## Start your Indigo Server using Gunicorn
 
@@ -336,12 +357,12 @@ which python
 ```
 Which should return something like:
 ```bash
-/root/.pyenv/shims/python
+/usr/bin/python3
 ```
 3. In our example, Indigo is installed in /root/indigo, so to determine our cron script, it will look like this:
 {Cron Timing} {Python 3 Path} {Indigo Path} {manage.py switches}:
 ```bash
-*/30 * * * * /root/.pyenv/shims/python /root/indigo/manage.py process_tasks --duration 60
+*/30 * * * * /usr/bin/python3 /root/indigo/manage.py process_tasks --duration 60
 ```
 4. Now we simply edit the crontab file with this instruction:
 ```bash
