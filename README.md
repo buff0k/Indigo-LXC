@@ -17,7 +17,6 @@ If you are asking that here, I think you are starting at the wrong place and I s
  5. [Poppler](https://poppler.freedesktop.org/) (PDF Rendering Library)
  7. [Ruby](https://www.ruby.org/) (Another popular Scripting Langauge)
  8. [RBENV](https://github.com/rbenv) (Simplified Ruby Management for Linux)
- 9. [PyEnv](https://github.com/pyenv/pyenv) (Simplified Python Management for Linux)
  10. [Django](https://www.djangoproject.com) (A rich web platform)
  11. [Indigo](https://github.com/laws-africa/indigo) (A specialized document management system)
 
@@ -78,55 +77,6 @@ We should always start on a clean and updated Debian 11 install, as this include
  ruby -v
  ```
  Which should show Ruby version 2.7.2
-
-### Install PyEnv and Python 3.6
-
-Current release version is tested for Python 3.6.
-
- 1. Install PyEnv
- 
- Use the Curl script:
- ```bash
- curl -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer | bash
- ```
-
- 2. After the installation, rbenv needs some configurations to system ENV, so:
- ```bash
- nano ~/.bashrc
- ```
- and add the following at the end of the file:
- ```bash
- export PYENV_ROOT="$HOME/.pyenv"
- command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
- eval "$(pyenv init -)"
- ```
- 
- 3. Now enable the local ENV Vars:
- ```bash
- source ~/.bashrc
- ```
-
- 4. Test pyenv:
- ```bash
- pyenv -v
- ```
- Which should return your pyenv version
- 
- 5. Install Python 3.6.15
- ```bash
- pyenv install 3.6.15
- ```
- 
- 5. Set Python 3.6.15 as your global Python version:
- ```bash
- pyenv local 3.6.15
- ```
- 
- 6. Test your Python installation:
- ```bash
- python --version
- ```
- Which should show Python version 3.6.15
 
 ### Configure Pythons PIP and install some requirements
 
@@ -203,7 +153,35 @@ su - postgres -c 'createuser -d -P indigo'
 
 ## Configure your Indigo Installation:
 
- 1. Indigo Settings
+ 1. Create / Update Database Tables
+ ```bash
+ python3 manage.py migrate
+ ```
+ 
+ 2. Import Countries and Languages
+ ```bash
+ python3 manage.py update_countries_plus
+ ```
+ ```bash
+ python3 manage.py loaddata languages_data.json.gz
+ ```
+ 
+ 3. Create a Superuser account
+ ```bash
+ python3 manage.py createsuperuser
+ ```
+ 
+ 4. Compile static files (Otherwise Gunicorn won't work):
+ ```bash
+ python3 manage.py compilescss
+ ```
+ ```bash
+ python3 manage.py collectstatic --noinput -i docs -i \*scss 2>&1
+ ```
+ 
+### Set your Configurations that Indigo requires for deployment:
+ 
+  1. Indigo Settings
  
  Indigo stores it's settings in a Django settings file located at /root/indigo/indigo/settings.py, however since we are already in the /root/indigo folder:
  ```bash
@@ -215,57 +193,7 @@ su - postgres -c 'createuser -d -P indigo'
  ```
  See later in this tutorial to configure crontab to automate background tasks.
  
- 2. Create / Update Database Tables
- ```bash
- python manage.py migrate
- ```
- 
- 3. Import Countries and Languages
- ```bash
- python manage.py update_countries_plus
- ```
- ```bash
- python manage.py loaddata languages_data.json.gz
- ```
- 
- 4. Create a Superuser account
- ```bash
- python manage.py createsuperuser
- ```
- 
- 5. Compile static files (Otherwise Gunicorn won't work):
- ```bash
- python manage.py compilescss
- ```
- ```bash
- python manage.py collectstatic --noinput -i docs -i \*scss 2>&1
- ```
- 
- 6. Create SSL Certificates (Could be done with certbot, but would also require changing the Gunicorn String and then requires public facing server):
- ```bash
- openssl req -new -x509 -days 365 -nodes -out server.crt -keyout server.key
- ```
- 
-## Start your Indigo Server using Gunicorn
-
-I use Gunicorn on my LXC deployment which hosts the page internally, publicly it sits behind an NginX reverse proxy so this works for me. Feel free to use NginX along with Gunicorn.
-
-The following script will execute Gunicorn and start listening for https traffic on port 8000 (Note, it must be run from the /root/indigo folder):
-```bash
-gunicorn indigo.wsgi:application -k=gevent -t 600 --certfile=/root/indigo/server.crt --keyfile=/root/indigo/server.key -b=0.0.0.0:8000 -w=16 --threads 16 --forwarded-allow-ips=* --proxy-allow-from=* --limit-request-line 0
-```
-To understand each of these arguments:
---worker-class or -k : What kind of worker (use gevent)
--t : timeout (use 600ms for now)
---bind or -b : Bind to address:port (use 0.0.0.0:8000)
---workers or -w : How many workers (use 8 - 2x cores)
---threads : How many threads per worker (Use 8 - 2x cores)
--D : Run as daemon (Background Service)
---limit-request-line : Length of request line (set to 0)
-
-You can now connect to your Indigo Server on https://your_ip:8000
-
-### Set your ENV Variables that Indigo requires for development:
+ 2. ENV Configurations
  
  Edit the bashrc file:
  ```bash
@@ -295,8 +223,32 @@ You can now connect to your Indigo Server on https://your_ip:8000
  ```bash
  source ~/.bashrc
  ```
+   
+ 3. Create SSL Certificates (Could be done with certbot, but would also require changing the Gunicorn String and then requires public facing server):
+ ```bash
+ openssl req -new -x509 -days 365 -nodes -out server.crt -keyout server.key
+ ```
 
-## Use Supervisor to automate server startup (Testing)
+## Start your Indigo Server using Gunicorn
+
+I use Gunicorn on my LXC deployment which hosts the page internally, publicly it sits behind an NginX reverse proxy so this works for me. Feel free to use NginX along with Gunicorn.
+
+The following script will execute Gunicorn and start listening for https traffic on port 8000 (Note, it must be run from the /root/indigo folder):
+```bash
+gunicorn indigo.wsgi:application -k=gevent -t 600 --certfile=/root/indigo/server.crt --keyfile=/root/indigo/server.key -b=0.0.0.0:8000 -w=16 --threads 16 --forwarded-allow-ips=* --proxy-allow-from=* --limit-request-line 0
+```
+To understand each of these arguments:
+--worker-class or -k : What kind of worker (use gevent)
+-t : timeout (use 600ms for now)
+--bind or -b : Bind to address:port (use 0.0.0.0:8000)
+--workers or -w : How many workers (use 8 - 2x cores)
+--threads : How many threads per worker (Use 8 - 2x cores)
+-D : Run as daemon (Background Service)
+--limit-request-line : Length of request line (set to 0)
+
+You can now connect to your Indigo Server on https://your_ip:8000
+
+## Use Supervisor to automate server startup
 
 Through significant trial and error, some walkthroughs and dumb luck, I managed to get supervisor to autostart gunicorn, so to make this work, do the following:
 
