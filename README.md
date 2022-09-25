@@ -1,6 +1,6 @@
-# Indigo-LXC
+# Indigo-LXC-Testing Branch
 
-How to install [Laws-Africa/Indigo](https://github.com/laws-africa/indigo) in an LXC Container. Note this will install latest development from the repo. For production use, refer to [My Article](https://www.buff0k.co.za/node/8) in this regard, or add the following tags to the Git clone command: --branch v17.0.0 --single-branch (You also don't need to install nodejs, npm, sass or docpipe for the current release version)
+How to install [Laws-Africa/Indigo](https://github.com/laws-africa/indigo) in an LXC Container. Note this will install latest development from the repo. For production use, refer to the current stable release (17.0.0 at the time of publishing).
 
 All credit and atribution to [Laws-Africa](https://github.com/laws-africa/) for their excellent work on the Indigo Platform.
 
