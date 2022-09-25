@@ -1,6 +1,6 @@
 # Indigo-LXC
 
-How to install [Laws-Africa/Indigo](https://github.com/laws-africa/indigo) in an LXC Container. Note this will install latest development from the repo. For production use, refer to [My Article](https://www.buff0k.co.za/node/8) in this regard, or add the following tags to the Git clone command: --branch v17.0.0 --single-branch (You also don't need to install nodejs, npm, sass or docpipe for the current release version)
+How to install [Laws-Africa/Indigo](https://github.com/laws-africa/indigo) in an LXC Container. Note this will install the current stable (17.0.0) version from the repo.
 
 All credit and atribution to [Laws-Africa](https://github.com/laws-africa/) for their excellent work on the Indigo Platform.
 
@@ -20,9 +20,6 @@ If you are asking that here, I think you are starting at the wrong place and I s
  9. [PyEnv](https://github.com/pyenv/pyenv) (Simplified Python Management for Linux)
  10. [Django](https://www.djangoproject.com) (A rich web platform)
  11. [Indigo](https://github.com/laws-africa/indigo) (A specialized document management system)
- 12. [NodJS](https://nodejs.org) (A JavaScript Runtime)
- 13. [NPM](https://www.npmjs.com) (Java Pacakge Repo)
- 14. [SASS](https://sass-lang.com) (CSS Extension Language)
 
 ## Getting started
 
@@ -82,9 +79,9 @@ We should always start on a clean and updated Debian 11 install, as this include
  ```
  Which should show Ruby version 2.7.2
 
-### Install PyEnv and Python 3.7
+### Install PyEnv and Python 3.6
 
-Due to the requirements of django-background-task, we are limited to Python 3.7.
+Current release version is tested for Python 3.6.
 
  1. Install PyEnv
  
@@ -115,40 +112,27 @@ Due to the requirements of django-background-task, we are limited to Python 3.7.
  ```
  Which should return your pyenv version
  
- 5. Install Python 3.7.13
+ 5. Install Python 3.6.15
  ```bash
- pyenv install 3.7.13
+ pyenv install 3.6.15
  ```
  
- 5. Set Python 3.7.13 as your global Python version:
+ 5. Set Python 3.6.15 as your global Python version:
  ```bash
- pyenv local 3.7.13
+ pyenv local 3.6.15
  ```
  
  6. Test your Python installation:
  ```bash
  python --version
  ```
- Which should show Python version 3.7.13
- 
-### Install NodJS and NPM
-
- ```bash
- apt install nodejs npm --no-install-recommends
- ```
- 
-### Install SASS
-
- Install SASS
- ```bash
- npm install -g sass
- ```
+ Which should show Python version 3.6.15
 
 ### Configure Pythons PIP and install some requirements
 
- 1. Update PIP:
+ 1. Update PIP and setuptools:
  ```bash
- pip install --upgrade pip
+ pip install --upgrade pip setuptools
  ```
  
  2. Install some required PIP Packages:
@@ -156,10 +140,6 @@ Due to the requirements of django-background-task, we are limited to Python 3.7.
  Wheel
  ```bash
  pip install wheel
- ```
- Setuptools (Required by PsycoPG2)
- ```bash
- pip install -U pip setuptools
  ```
  Gevent (Required for Indigo to work with Gunicorn)
  ```bash
@@ -176,10 +156,7 @@ Due to the requirements of django-background-task, we are limited to Python 3.7.
  ```bash
  pip install django-background-task
  ```
- Docpipe (Issues with the setup.py file and installation)
- ```bash
- pip install docpipe
- ```
+
  ### Create the postgres database:
 
  For this part we will use the database named indigo and user named indigo with password indigo. If you want to use anything else, you will need to also change the DATABASE_URL variable below:
@@ -203,7 +180,7 @@ su - postgres -c 'createuser -d -P indigo'
 
  1. Let's clone into the current Indigo Master Branch:
  ```bash
- git clone https://github.com/laws-africa/indigo
+ git clone --branch v17.0.0 --single-branch https://github.com/laws-africa/indigo
  ```
  
  2. Change into the indigo folder (/root/indigo/)
@@ -211,7 +188,7 @@ su - postgres -c 'createuser -d -P indigo'
  cd indigo
  ```
  
- 3. Install Indigo Python dependencies, including Django 2.2:
+ 3. Install Indigo Python dependencies, including Django:
  ```bash
  pip install -e .
  ```
