@@ -16,7 +16,6 @@ If you are asking that here, I think you are starting at the wrong place and I s
  4. [WKHMTLtoPDF](https://wkhtmltopdf.org/) (PDF Creation - Not currently working)
  5. [Poppler](https://poppler.freedesktop.org/) (PDF Rendering Library)
  7. [Ruby](https://www.ruby.org/) (Another popular Scripting Langauge)
- 8. [RBENV](https://github.com/rbenv) (Simplified Ruby Management for Linux)
  10. [Django](https://www.djangoproject.com) (A rich web platform)
  11. [Indigo](https://github.com/laws-africa/indigo) (A specialized document management system)
 
@@ -31,52 +30,8 @@ We should always start on a clean and updated Debian 11 install, as this include
  
  2. Install the prerequisite packages:
  ```bash
- apt install git curl libssl-dev libreadline-dev zlib1g-dev autoconf bison build-essential libyaml-dev libreadline-dev libncurses5-dev libffi-dev libgdbm-dev xfonts-base xfonts-75dpi fontconfig xfonts-encodings xfonts-utils poppler-utils postgresql python3-pip libpq-dev libpoppler-dev sqlite3 libsqlite3-dev wkhtmltopdf libbz2-dev python3-dev make zlib1g-dev libreadline-dev llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev --no-install-recommends -y
+ apt install git curl libssl-dev libreadline-dev zlib1g-dev autoconf bison build-essential libyaml-dev libreadline-dev libncurses5-dev libffi-dev libgdbm-dev xfonts-base xfonts-75dpi fontconfig xfonts-encodings xfonts-utils poppler-utils postgresql python3-pip libpq-dev libpoppler-dev sqlite3 libsqlite3-dev wkhtmltopdf libbz2-dev python3-dev make zlib1g-dev libreadline-dev llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev ruby-full --no-install-recommends -y
  ```
- 
-## Install Rbenv and Ruby version 2.7.2 (Officially current Ruby version of the Indigo Project):
-
- 1. Install Rbenv
- 
- The nice perople at rbenv have created a curl script we can use:
- ```bash
- curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
- ```
-
- 2. After the installation, rbenv needs some configurations to system ENV, so:
- ```bash
- echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
- ```
- ```bash
- echo 'eval "$(rbenv init -)"' >> ~/.bashrc
- ```
- 
- 3. Now enable the local ENV Vars:
- ```bash
- source ~/.bashrc
- ```
-
- 4. Test rbenv:
- ```bash
- rbenv -v
- ```
- Which should return your rbenv version
- 
- 5. Install Ruby 2.7.2
- ```bash
- rbenv install 2.7.2
- ```
- 
- 5. Set Ruby 2.7.2 as your global Ruby version:
- ```bash
- rbenv global 2.7.2
- ```
- 
- 6. Test your Ruby installation:
- ```bash
- ruby -v
- ```
- Which should show Ruby version 2.7.2
 
 ### Configure Pythons PIP and install some requirements
 
