@@ -16,6 +16,8 @@ If you are asking that here, I think you are starting at the wrong place and I s
  4. [WKHMTLtoPDF](https://wkhtmltopdf.org/) (PDF Creation - Not currently working)
  5. [Poppler](https://poppler.freedesktop.org/) (PDF Rendering Library)
  7. [Ruby](https://www.ruby.org/) (Another popular Scripting Langauge)
+ 8. [RBENV](https://github.com/rbenv) (Simplified Ruby Management for Linux)
+ 9. [PyEnv](https://github.com/pyenv/pyenv) (Simplified Python Management for Linux)
  10. [Django](https://www.djangoproject.com) (A rich web platform)
  11. [Indigo](https://github.com/laws-africa/indigo) (A specialized document management system)
 
@@ -30,8 +32,101 @@ We should always start on a clean and updated Debian 11 install, as this include
  
  2. Install the prerequisite packages:
  ```bash
- apt install git curl libssl-dev libreadline-dev zlib1g-dev autoconf bison build-essential libyaml-dev libreadline-dev libncurses5-dev libffi-dev libgdbm-dev xfonts-base xfonts-75dpi fontconfig xfonts-encodings xfonts-utils poppler-utils postgresql python3-pip libpq-dev libpoppler-dev sqlite3 libsqlite3-dev wkhtmltopdf libbz2-dev python3-dev make zlib1g-dev libreadline-dev llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev ruby-full --no-install-recommends -y
+ apt install git curl libssl-dev libreadline-dev zlib1g-dev autoconf bison build-essential libyaml-dev libreadline-dev libncurses5-dev libffi-dev libgdbm-dev xfonts-base xfonts-75dpi fontconfig xfonts-encodings xfonts-utils poppler-utils postgresql python3-pip libpq-dev libpoppler-dev sqlite3 libsqlite3-dev wkhtmltopdf libbz2-dev python3-dev make zlib1g-dev libreadline-dev llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev --no-install-recommends -y
  ```
+
+## Install Rbenv and Ruby version 2.7.2 (Officially current Ruby version of the Indigo Project):
+
+ 1. Install Rbenv
+ 
+ The nice perople at rbenv have created a curl script we can use:
+ ```bash
+ curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
+ ```
+
+ 2. After the installation, rbenv needs some configurations to system ENV, so:
+ ```bash
+ echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+ ```
+ ```bash
+ echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+ ```
+ 
+ 3. Now enable the local ENV Vars:
+ ```bash
+ source ~/.bashrc
+ ```
+
+ 4. Test rbenv:
+ ```bash
+ rbenv -v
+ ```
+ Which should return your rbenv version
+ 
+ 5. Install Ruby 2.7.2
+ ```bash
+ rbenv install 2.7.2
+ ```
+ 
+ 5. Set Ruby 2.7.2 as your global Ruby version:
+ ```bash
+ rbenv global 2.7.2
+ ```
+ 
+ 6. Test your Ruby installation:
+ ```bash
+ ruby -v
+ ```
+ Which should show Ruby version 2.7.2
+
+### Install PyEnv and Python 3.7
+
+Due to the requirements of django-background-task, we are limited to Python 3.7.
+
+ 1. Install PyEnv
+ 
+ Use the Curl script:
+ ```bash
+ curl -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer | bash
+ ```
+
+ 2. After the installation, rbenv needs some configurations to system ENV, so:
+ ```bash
+ nano ~/.bashrc
+ ```
+ and add the following at the end of the file:
+ ```bash
+ export PYENV_ROOT="$HOME/.pyenv"
+ command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+ eval "$(pyenv init -)"
+ ```
+ 
+ 3. Now enable the local ENV Vars:
+ ```bash
+ source ~/.bashrc
+ ```
+
+ 4. Test pyenv:
+ ```bash
+ pyenv -v
+ ```
+ Which should return your pyenv version
+ 
+ 5. Install Python 3.6.13
+ ```bash
+ pyenv install 3.7.13
+ ```
+ 
+ 5. Set Python 3.7.13 as your global Python version:
+ ```bash
+ pyenv local 3.7.13
+ ```
+ 
+ 6. Test your Python installation:
+ ```bash
+ python --version
+ ```
+ Which should show Python version 3.7.13
 
 ### Configure Pythons PIP and install some requirements
 
@@ -42,24 +137,8 @@ We should always start on a clean and updated Debian 11 install, as this include
  
  2. Install some required PIP Packages:
  
- Wheel
  ```bash
- pip install wheel
- ```
- Gevent (Required for Indigo to work with Gunicorn)
- ```bash
- pip install gevent==21.8.0
- ```
- Gunicorn (A Lightweight webserver)
- ```bash
- pip install gunicorn==20.1.0
- ```
- ```bash
- pip install psycopg2==2.8.6
- ```
- Django Background Task (No idea why this is not automated)
- ```bash
- pip install django-background-task
+ pip install wheel gevent==21.8.0 gunicorn==20.1.0 psycopg2==2.8.6 django-background-task
  ```
 
  ### Create the postgres database:
