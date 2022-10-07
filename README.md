@@ -133,7 +133,21 @@ su - postgres -c 'createuser -d -P indigo'
  ```bash
  python3 manage.py collectstatic --noinput -i docs -i \*scss 2>&1
  ```
- 
+
+### Run Development Server for intial configuration
+
+  1. Start the development server:
+  ```bash
+  python3 manage.py runserver 0.0.0.0:8000
+  ```
+  
+  2. Access your development server via http://your-ip:8000
+  3. Login with the superuser account created earlier.
+  4. In the top-right corner click your username and on th edropdown menu select "Site sttings".
+  5. Under the Indigo API section, add a language.
+  6. Also under the Indigo API section, add a country, making sure to select a default languate.
+  7. You can now stop the development server with Ctrl+C.
+
 ### Set your Configurations that Indigo requires for deployment:
  
   1. Indigo Settings
