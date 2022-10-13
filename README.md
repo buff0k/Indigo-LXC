@@ -225,7 +225,8 @@ su - postgres -c 'createuser -d -P indigo'
   4. In the top-right corner click your username and on th edropdown menu select "Site sttings".
   5. Under the Indigo API section, add a language.
   6. Also under the Indigo API section, add a country, making sure to select a default languate.
-  7. You can now stop the development server with Ctrl+C.
+  7. Make sure your user has a country set and all permissions granted.
+  8. You can now stop the development server with Ctrl+C.
 
 ### Set your Configurations that Indigo requires for deployment:
  
