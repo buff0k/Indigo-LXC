@@ -351,7 +351,7 @@ LOG_LEVEL=debug
 cd $DIR
 export PYTHONPATH=$DIR:$PYTHONPATH
 #Command to run the progam under supeperisor
-exec gunicorn --chdir /root/indigo indigo.wsgi:application -k=gevent -t 600 --certfile=/root/server.crt --keyfile=/root/server.key -b=0.0.0.0:8000 -w=16 --threads 16 --forwarded-allow-ips=* --proxy-allow-from=* --limit-request-line 0 --log-level=debug --log-file=-
+exec /root/.pyenv/shims/gunicorn --chdir /root/indigo indigo.wsgi:application -k=gevent -t 600 --certfile=/root/server.crt --keyfile=/root/server.key -b=0.0.0.0:8000 -w=16 --threads 16 --forwarded-allow-ips=* --proxy-allow-from=* --limit-request-line 0 --log-level=debug --log-file=-
 ```
 3. Make this file executable:
 ```bash
