@@ -168,14 +168,6 @@ Due to the requirements of django-background-task, we are limited to Python 3.7.
  ```bash
  pip install psycopg2-binary==2.9.4
  ```
- Django Background Task (No idea why this is not automated)
- ```bash
- pip install django-background-task
- ```
- Docpipe (Issues with the setup.py file and installation)
- ```bash
- pip install docpipe
- ```
  ### Create the postgres database:
 
  For this part we will use the database named indigo and user named indigo with password indigo. If you want to use anything else, you will need to also change the DATABASE_URL variable below:
