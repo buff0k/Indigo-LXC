@@ -173,7 +173,7 @@ Due to the requirements of django-background-task, we are limited to Python 3.7.
  pip install gunicorn==20.1.0
  ```
  ```bash
- pip install psycopg2==2.8.6
+ pip install psycopg2-binary==2.9.4
  ```
  Django Background Task (No idea why this is not automated)
  ```bash
