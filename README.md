@@ -35,7 +35,7 @@ We should always start on a clean and updated Debian 11 install, as this include
  
  2. Install the prerequisite packages:
  ```bash
- apt install curl git build-essential nodejs npm poppler-utils fontconfig xfonts-75dpi xfonts-base --no-install-recommends -y
+ apt install curl libcurl4 git build-essential nodejs npm poppler-utils fontconfig xfonts-75dpi xfonts-base --no-install-recommends -y
  ```
  
 ## Install WKHTMLtoPDF
