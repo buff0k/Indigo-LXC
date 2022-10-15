@@ -328,9 +328,9 @@ Through significant trial and error, some walkthroughs and dumb luck, I managed 
 ```bash
 apt update && apt install supervisor -y
 ```
-2. Enter the indigo installation folder to create a gunicorn_config file
+2. Move to the home folder to create a gunicorn_config file
 ```bash
-cd /root/indigo
+cd
 ```
 ```bash
 touch gunicorn_configuration
@@ -352,7 +352,7 @@ cd $DIR
 export DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
 export PYTHONPATH=$DIR:$PYTHONPATH
 #Command to run the progam under supeperisor
-exec gunicorn --chdir /root/indigo indigo.wsgi:application -k=gevent -t 600 --certfile=/root/indigo/server.crt --keyfile=/root/indigo/server.key -b=0.0.0.0:8000 -w=16 --threads 16 --forwarded-allow-ips=* --proxy-allow-from=* --limit-request-line 0 --log-level=debug --log-file=-
+exec gunicorn --chdir /root/indigo indigo.wsgi:application -k=gevent -t 600 --certfile=/root/server.crt --keyfile=/root/server.key -b=0.0.0.0:8000 -w=16 --threads 16 --forwarded-allow-ips=* --proxy-allow-from=* --limit-request-line 0 --log-level=debug --log-file=-
 ```
 3. Make this file executable:
 ```bash
@@ -375,12 +375,12 @@ nano /etc/supervisor/conf.d/indigo.conf
 And make it look like this:
 ```bash
 [program:indigo]
-command=/root/indigo/gunicorn_configuration
+command=/root/gunicorn_configuration
 user=root
 autostart=true
 autorestart=true
 redirect_stderr=true
-stdout_logfile=/root/indigo/gunicorn-error.log
+stdout_logfile=/root/gunicorn-error.log
 ```
 6. Enable and start your new Supervisor app:
 ```bash
