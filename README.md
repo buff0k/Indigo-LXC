@@ -140,12 +140,6 @@ Due to the requirements of django-background-task, we are limited to Python 3.7.
  ```
  Which should show Python version 3.7.13
  
-### Install NodJS and NPM
-
- ```bash
- apt install nodejs npm --no-install-recommends
- ```
- 
 ### Install SASS
 
  Install SASS
