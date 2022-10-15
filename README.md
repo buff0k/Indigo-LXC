@@ -349,7 +349,6 @@ DJANGO_SETTINGS_MODULE=indigo.settings   #Which Django setting file should use
 DJANGO_WSGI_MODULE=indigo.wsgi           #Which WSGI file should use
 LOG_LEVEL=debug
 cd $DIR
-export DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
 export PYTHONPATH=$DIR:$PYTHONPATH
 #Command to run the progam under supeperisor
 exec gunicorn --chdir /root/indigo indigo.wsgi:application -k=gevent -t 600 --certfile=/root/server.crt --keyfile=/root/server.key -b=0.0.0.0:8000 -w=16 --threads 16 --forwarded-allow-ips=* --proxy-allow-from=* --limit-request-line 0 --log-level=debug --log-file=-
