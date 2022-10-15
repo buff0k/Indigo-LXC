@@ -35,7 +35,7 @@ We should always start on a clean and updated Debian 11 install, as this include
  
  2. Install the prerequisite packages:
  ```bash
- apt install curl libcurl4 git build-essential zlib1g-dev nodejs npm poppler-utils fontconfig xfonts-75dpi xfonts-base --no-install-recommends -y
+ apt install curl libcurl4 git build-esential zlib1g-dev nodejs npm poppler-utils fontconfig xfonts-75dpi xfonts-base postgresql --no-install-recommends -y
  ```
  
 ## Install WKHTMLtoPDF
@@ -149,21 +149,13 @@ Due to the requirements of django-background-task, we are limited to Python 3.7.
 
 ### Configure Pythons PIP and install some requirements
 
- 1. Update PIP:
+ 1. Update PIP, setuptools and wheel:
  ```bash
- pip install --upgrade pip
+ pip install --upgrade pip setuptools wheel
  ```
  
  2. Install some required PIP Packages:
  
- Wheel
- ```bash
- pip install wheel
- ```
- Setuptools (Required by PsycoPG2)
- ```bash
- pip install -U pip setuptools
- ```
  Gevent (Required for Indigo to work with Gunicorn)
  ```bash
  pip install gevent==21.8.0
@@ -172,6 +164,7 @@ Due to the requirements of django-background-task, we are limited to Python 3.7.
  ```bash
  pip install gunicorn==20.1.0
  ```
+ PsycoPG2 (A database library)
  ```bash
  pip install psycopg2-binary==2.9.4
  ```
