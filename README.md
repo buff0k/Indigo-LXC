@@ -38,6 +38,15 @@ We should always start on a clean and updated Debian 11 install, as this include
  apt install git build-essential nodejs npm netcat poppler-utils --no-install-recommends -y
  ```
  
+## Install WKHTMLtoPDF
+
+```bash
+wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-2/wkhtmltox_0.12.6.1-2.bullseye_amd64.deb
+```
+```bash
+dpkg -i wkhtmltox_0.12.6.1-2.bullseye_amd64.deb
+```
+ 
 ## Install Rbenv and Ruby version 2.7.2 (Officially current Ruby version of the Indigo Project):
 
  1. Install Rbenv
