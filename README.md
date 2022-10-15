@@ -228,7 +228,7 @@ su - postgres -c 'createuser -d -P indigo'
  
  2. Build list of database tables required
  ```bash
- python manage.py migrations
+ python manage.py makemigrations
  ```
  
  3. Create / Update Database Tables
