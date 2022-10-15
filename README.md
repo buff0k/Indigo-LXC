@@ -47,7 +47,7 @@ wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-2/wkhtm
 dpkg -i wkhtmltox_0.12.6.1-2.bullseye_amd64.deb
 ```
  
-## Install Rbenv and Ruby version 2.7.2 (Officially current Ruby version of the Indigo Project):
+## Install Rbenv and Ruby version 2.7.6:
 
  1. Install Rbenv
  
@@ -75,23 +75,23 @@ dpkg -i wkhtmltox_0.12.6.1-2.bullseye_amd64.deb
  ```
  Which should return your rbenv version
  
- 5. Install Ruby 2.7.2
+ 5. Install Ruby 2.7.6
  ```bash
- rbenv install 2.7.2
+ rbenv install 2.7.6
  ```
  
- 5. Set Ruby 2.7.2 as your global Ruby version:
+ 5. Set Ruby 2.7.6 as your global Ruby version:
  ```bash
- rbenv global 2.7.2
+ rbenv global 2.7.6
  ```
  
  6. Test your Ruby installation:
  ```bash
  ruby -v
  ```
- Which should show Ruby version 2.7.2
+ Which should show Ruby version 2.7.6
 
-### Install PyEnv and Python 3.7
+### Install PyEnv and Python 3.8
 
 Due to the requirements of django-background-task, we are limited to Python 3.7.
 
@@ -124,21 +124,21 @@ Due to the requirements of django-background-task, we are limited to Python 3.7.
  ```
  Which should return your pyenv version
  
- 5. Install Python 3.7.13
+ 5. Install Python 3.8.14
  ```bash
- pyenv install 3.7.13
+ pyenv install 3.8.14
  ```
  
- 5. Set Python 3.7.13 as your global Python version:
+ 5. Set Python 3.8.14 as your global Python version:
  ```bash
- pyenv local 3.7.13
+ pyenv local 3.8.14
  ```
  
  6. Test your Python installation:
  ```bash
  python --version
  ```
- Which should show Python version 3.7.13
+ Which should show Python version 3.8.14
  
 ### Install SASS
 
