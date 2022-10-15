@@ -47,7 +47,7 @@ wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-2/wkhtm
 dpkg -i wkhtmltox_0.12.6.1-2.bullseye_amd64.deb
 ```
  
-## Install Rbenv and Ruby version 2.7.6:
+## Install Rbenv and Ruby version 2.7:
 
  1. Install Rbenv
  
