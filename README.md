@@ -191,7 +191,7 @@ su - postgres -c 'createuser -d -P indigo'
 
  1. Let's clone into the current Indigo Master Branch:
  ```bash
- git clone --branch v17.0.0 --single-branch https://github.com/laws-africa/indigo
+ git clone --branch v17.2.0 --single-branch https://github.com/laws-africa/indigo
  ```
  
  2. Change into the indigo folder (/root/indigo/)
