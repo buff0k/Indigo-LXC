@@ -16,9 +16,8 @@ If you are asking that here, I think you are starting at the wrong place and I s
  4. [WKHMTLtoPDF](https://wkhtmltopdf.org/) (PDF Creation - Not currently working)
  5. [Poppler](https://poppler.freedesktop.org/) (PDF Rendering Library)
  7. [Ruby](https://www.ruby.org/) (Another popular Scripting Langauge)
- 8. [RBENV](https://github.com/rbenv) (Simplified Ruby Management for Linux)
- 10. [Django](https://www.djangoproject.com) (A rich web platform)
- 11. [Indigo](https://github.com/laws-africa/indigo) (A specialized document management system)
+ 8. [Django](https://www.djangoproject.com) (A rich web platform)
+ 9. [Indigo](https://github.com/laws-africa/indigo) (A specialized document management system)
 
 ## Getting started
 
