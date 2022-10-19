@@ -93,7 +93,7 @@ dpkg -i wkhtmltox_0.12.6.1-2.bullseye_amd64.deb
 
 ### Install PyEnv and Python 3.8
 
-Due to the requirements of django-background-task, we are limited to Python 3.7.
+Due to the requirements of django-background-task, we are limited to Python 3.8.
 
  1. Install PyEnv
  
@@ -124,21 +124,21 @@ Due to the requirements of django-background-task, we are limited to Python 3.7.
  ```
  Which should return your pyenv version
  
- 5. Install Python 3.8.15
+ 5. Install Python 3.8.14
  ```bash
  pyenv install 3.8.15
  ```
  
  5. Set Python 3.8.14 as your global Python version:
  ```bash
- pyenv local 3.8.15
+ pyenv local 3.8.14
  ```
  
  6. Test your Python installation:
  ```bash
  python --version
  ```
- Which should show Python version 3.8.15
+ Which should show Python version 3.8.14
  
 ### Install SASS
 
@@ -149,13 +149,21 @@ Due to the requirements of django-background-task, we are limited to Python 3.7.
 
 ### Configure Pythons PIP and install some requirements
 
- 1. Update PIP, setuptools and wheel:
+ 1. Update PIP:
  ```bash
- pip install --upgrade pip setuptools wheel
+ pip install -U pip
  ```
  
  2. Install some required PIP Packages:
  
+ Wheel
+ ```bash
+ pip install -U wheel
+ ```
+ SetupTools
+ ```bash
+ pip install -U setuptools
+ ``` 
  Gevent (Required for Indigo to work with Gunicorn)
  ```bash
  pip install gevent==21.8.0
