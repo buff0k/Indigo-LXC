@@ -82,9 +82,9 @@ We should always start on a clean and updated Debian 11 install, as this include
  ```
  Which should show Ruby version 2.7.2
 
-### Install PyEnv and Python 3.7
+### Install PyEnv and Python 3.8
 
-Due to the requirements of django-background-task, we are limited to Python 3.7.
+Due to the requirements of django-background-task, we are limited to Python 3.8.
 
  1. Install PyEnv
  
@@ -115,21 +115,21 @@ Due to the requirements of django-background-task, we are limited to Python 3.7.
  ```
  Which should return your pyenv version
  
- 5. Install Python 3.7.13
+ 5. Install Python 3.8.14
  ```bash
- pyenv install 3.7.13
+ pyenv install 3.8.14
  ```
  
- 5. Set Python 3.7.13 as your global Python version:
+ 5. Set Python 3.8.14 as your global Python version:
  ```bash
- pyenv local 3.7.13
+ pyenv local 3.8.14
  ```
  
  6. Test your Python installation:
  ```bash
  python --version
  ```
- Which should show Python version 3.7.13
+ Which should show Python version 3.8.14
  
 ### Install NodJS and NPM
 
@@ -148,18 +148,18 @@ Due to the requirements of django-background-task, we are limited to Python 3.7.
 
  1. Update PIP:
  ```bash
- pip install --upgrade pip
+ pip install -U pip
  ```
  
  2. Install some required PIP Packages:
  
  Wheel
  ```bash
- pip install wheel
+ pip install -U wheel
  ```
  Setuptools (Required by PsycoPG2)
  ```bash
- pip install -U pip setuptools
+ pip install -U setuptools
  ```
  Gevent (Required for Indigo to work with Gunicorn)
  ```bash
@@ -170,16 +170,9 @@ Due to the requirements of django-background-task, we are limited to Python 3.7.
  pip install gunicorn==20.1.0
  ```
  ```bash
- pip install psycopg2==2.8.6
+ pip install psycopg2==2.9.4
  ```
- Django Background Task (No idea why this is not automated)
- ```bash
- pip install django-background-task
- ```
- Docpipe (Issues with the setup.py file and installation)
- ```bash
- pip install docpipe
- ```
+ 
  ### Create the postgres database:
 
  For this part we will use the database named indigo and user named indigo with password indigo. If you want to use anything else, you will need to also change the DATABASE_URL variable below:
@@ -266,7 +259,7 @@ su - postgres -c 'createuser -d -P indigo'
  
  6. Create SSL Certificates (Could be done with certbot, but would also require changing the Gunicorn String and then requires public facing server):
  ```bash
- openssl req -new -x509 -days 365 -nodes -out server.crt -keyout server.key
+ openssl req -new -x509 -days 365 -nodes -out /root/server.crt -keyout /root/server.key
  ```
  
 ## Start your Indigo Server using Gunicorn
@@ -275,7 +268,7 @@ I use Gunicorn on my LXC deployment which hosts the page internally, publicly it
 
 The following script will execute Gunicorn and start listening for https traffic on port 8000 (Note, it must be run from the /root/indigo folder):
 ```bash
-gunicorn indigo.wsgi:application -k=gevent -t 600 --certfile=/root/indigo/server.crt --keyfile=/root/indigo/server.key -b=0.0.0.0:8000 -w=16 --threads 16 --forwarded-allow-ips=* --proxy-allow-from=* --limit-request-line 0
+gunicorn indigo.wsgi:application -k=gevent -t 600 --certfile=/root/server.crt --keyfile=/root/server.key -b=0.0.0.0:8000 -w=16 --threads 16 --forwarded-allow-ips=* --proxy-allow-from=* --limit-request-line 0
 ```
 To understand each of these arguments:
 --worker-class or -k : What kind of worker (use gevent)
@@ -329,7 +322,7 @@ apt update && apt install supervisor -y
 ```
 2. Enter the indigo installation folder to create a gunicorn_config file
 ```bash
-cd /root/indigo
+cd /root
 ```
 ```bash
 touch gunicorn_configuration
@@ -351,7 +344,7 @@ cd $DIR
 export DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
 export PYTHONPATH=$DIR:$PYTHONPATH
 #Command to run the progam under supeperisor
-exec gunicorn --chdir /root/indigo indigo.wsgi:application -k=gevent -t 600 --certfile=/root/indigo/server.crt --keyfile=/root/indigo/server.key -b=0.0.0.0:8000 -w=16 --threads 16 --forwarded-allow-ips=* --proxy-allow-from=* --limit-request-line 0 --log-level=debug --log-file=-
+exec gunicorn --chdir /root/indigo indigo.wsgi:application -k=gevent -t 600 --certfile=/root/server.crt --keyfile=/root/server.key -b=0.0.0.0:8000 -w=16 --threads 16 --forwarded-allow-ips=* --proxy-allow-from=* --limit-request-line 0 --log-level=debug --log-file=-
 ```
 3. Make this file executable:
 ```bash
@@ -374,12 +367,12 @@ nano /etc/supervisor/conf.d/indigo.conf
 And make it look like this:
 ```bash
 [program:indigo]
-command=/root/indigo/gunicorn_configuration
+command=/root/gunicorn_configuration
 user=root
 autostart=true
 autorestart=true
 redirect_stderr=true
-stdout_logfile=/root/indigo/gunicorn-error.log
+stdout_logfile=/root/gunicorn-error.log
 ```
 6. Enable and start your new Supervisor app:
 ```bash
