@@ -1,6 +1,6 @@
-# Indigo-LXC-Testing Branch
+# Indigo Debian/LXC - Testing
 
-How to install [Laws-Africa/Indigo](https://github.com/laws-africa/indigo) in an LXC Container. Note this will install latest development from the repo. For production use, refer to the current stable release (17.0.0 at the time of publishing).
+How to install [Laws-Africa/Indigo](https://github.com/laws-africa/indigo) in an Debian 11 LXC Container. Note this will install development (17.2.1) version from the repo. Note these steps will also work for a bare-metal Debian 11 installation.
 
 All credit and atribution to [Laws-Africa](https://github.com/laws-africa/) for their excellent work on the Indigo Platform.
 
@@ -16,13 +16,11 @@ If you are asking that here, I think you are starting at the wrong place and I s
  4. [WKHMTLtoPDF](https://wkhtmltopdf.org/) (PDF Creation - Not currently working)
  5. [Poppler](https://poppler.freedesktop.org/) (PDF Rendering Library)
  7. [Ruby](https://www.ruby.org/) (Another popular Scripting Langauge)
- 8. [RBENV](https://github.com/rbenv) (Simplified Ruby Management for Linux)
- 9. [PyEnv](https://github.com/pyenv/pyenv) (Simplified Python Management for Linux)
- 10. [Django](https://www.djangoproject.com) (A rich web platform)
- 11. [Indigo](https://github.com/laws-africa/indigo) (A specialized document management system)
- 12. [NodJS](https://nodejs.org) (A JavaScript Runtime)
- 13. [NPM](https://www.npmjs.com) (Java Pacakge Repo)
- 14. [SASS](https://sass-lang.com) (CSS Extension Language)
+ 8. [Django](https://www.djangoproject.com) (A rich web platform)
+ 9. [Indigo](https://github.com/laws-africa/indigo) (A specialized document management system)
+ 10. [NodJS](https://nodejs.org) (A JavaScript Runtime)
+ 11. [NPM](https://www.npmjs.com) (Java Pacakge Repo)
+ 12. [SASS](https://sass-lang.com) (CSS Extension Language)
 
 ## Getting started
 
@@ -33,170 +31,68 @@ We should always start on a clean and updated Debian 11 install, as this include
  apt update && apt upgrade -y
  ```
  
- 2. Install the prerequisite packages:
+ 2. Install the prerequisite packages from apt:
  ```bash
- apt install git curl libssl-dev libreadline-dev zlib1g-dev autoconf bison build-essential libyaml-dev libreadline-dev libncurses5-dev libffi-dev libgdbm-dev xfonts-base xfonts-75dpi fontconfig xfonts-encodings xfonts-utils poppler-utils postgresql python3-pip libpq-dev libpoppler-dev sqlite3 libsqlite3-dev wkhtmltopdf libbz2-dev python3-dev make zlib1g-dev libreadline-dev llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev --no-install-recommends -y
+ apt install git build-essential poppler-utils fontconfig xfonts-base xfonts-75dpi postgresql ruby ruby-dev python3-pip python3-dev nodejs npm ghostscript --no-install-recommends
  ```
  
-## Install Rbenv and Ruby version 2.7.2 (Officially current Ruby version of the Indigo Project):
+ 3. Install WKHTMLtoPDF
+ ```bash
+ wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-2/wkhtmltox_0.12.6.1-2.bullseye_amd64.deb
+ ```
+ ```bash
+ dpkg -i wkhtmltox_0.12.6.1-2.bullseye_amd64.deb
+ ```
+ 
+## Configure Pythons pip and install some requirements
 
- 1. Install Rbenv
- 
- The nice perople at rbenv have created a curl script we can use:
- ```bash
- curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
- ```
-
- 2. After the installation, rbenv needs some configurations to system ENV, so:
- ```bash
- echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
- ```
- ```bash
- echo 'eval "$(rbenv init -)"' >> ~/.bashrc
- ```
- 
- 3. Now enable the local ENV Vars:
- ```bash
- source ~/.bashrc
- ```
-
- 4. Test rbenv:
- ```bash
- rbenv -v
- ```
- Which should return your rbenv version
- 
- 5. Install Ruby 2.7.2
- ```bash
- rbenv install 2.7.2
- ```
- 
- 5. Set Ruby 2.7.2 as your global Ruby version:
- ```bash
- rbenv global 2.7.2
- ```
- 
- 6. Test your Ruby installation:
- ```bash
- ruby -v
- ```
- Which should show Ruby version 2.7.2
-
-### Install PyEnv and Python 3.8
-
-Due to the requirements of django-background-task, we are limited to Python 3.8.
-
- 1. Install PyEnv
- 
- Use the Curl script:
- ```bash
- curl -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer | bash
- ```
-
- 2. After the installation, rbenv needs some configurations to system ENV, so:
- ```bash
- nano ~/.bashrc
- ```
- and add the following at the end of the file:
- ```bash
- export PYENV_ROOT="$HOME/.pyenv"
- command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
- eval "$(pyenv init -)"
- ```
- 
- 3. Now enable the local ENV Vars:
- ```bash
- source ~/.bashrc
- ```
-
- 4. Test pyenv:
- ```bash
- pyenv -v
- ```
- Which should return your pyenv version
- 
- 5. Install Python 3.8.14
- ```bash
- pyenv install 3.8.14
- ```
- 
- 5. Set Python 3.8.14 as your global Python version:
- ```bash
- pyenv local 3.8.14
- ```
- 
- 6. Test your Python installation:
- ```bash
- python --version
- ```
- Which should show Python version 3.8.14
- 
-### Install NodJS and NPM
-
- ```bash
- apt install nodejs npm --no-install-recommends
- ```
- 
-### Install SASS
-
- Install SASS
- ```bash
- npm install -g sass
- ```
-
-### Configure Pythons PIP and install some requirements
-
- 1. Update PIP:
+ 1. Update pip:
  ```bash
  pip install -U pip
  ```
  
- 2. Install some required PIP Packages:
- 
- Wheel
+ 2. Update setuptools and wheel
  ```bash
- pip install -U wheel
- ```
- Setuptools (Required by PsycoPG2)
- ```bash
- pip install -U setuptools
- ```
- Gevent (Required for Indigo to work with Gunicorn)
- ```bash
- pip install gevent==21.8.0
- ```
- Gunicorn (A Lightweight webserver)
- ```bash
- pip install gunicorn==20.1.0
- ```
- ```bash
- pip install psycopg2==2.9.4
+ pip install -U setuptools wheel
  ```
  
- ### Create the postgres database:
-
- For this part we will use the database named indigo and user named indigo with password indigo. If you want to use anything else, you will need to also change the DATABASE_URL variable below:
- The correct format for DATABASE_URL as postgres://USER:PASSWORD@HOST:PORT/DBNAME so if you change this, note that you should also substite the relevant commands below. To create the database and user, as root:
- ```bash
- su - postgres -c 'createdb indigo'
- ```
-```bash
-su - postgres -c 'createuser -d -P indigo'
-```
- If your db name, username and password are not indigo, make sure to configure the DATABASE_URL ENV variable  as follows:
+ 3. Install some required PIP Packages:
   ```bash
- echo 'export DATABASE_URL={postgres://indigo:indigo@localhost:5432/indigo}' >> ~/.bashrc
+ pip install gevent==21.8.0 gunicorn==20.1.0 psycopg2-binary==2.9.4
  ```
- Enable this
+
+## Install SASS runtime for NodeJS:
+
+ 1. Update pip:
+ ```bash
+ npm install -g sass
+ ```
+
+ ## Create the postgres database:
+
+ For this part we will use the database named indigodb and user named indiguser with password 123Password. Make sure you use a secure username and password, and pass the correct data to the ENV variable below, the correct format for DATABASE_URL is postgres://USER:PASSWORD@HOST:PORT/DBNAME so make sure you update this string accordingly before exporting it to the bashrc file. To create the database and user, as root:
+ ```bash
+ su - postgres -c 'createdb indigodb'
+ ```
+ ```bash
+ su - postgres -c 'createuser -d -P indigouser'
+ ```
+ Choose password: 123Password
+ 
+ If your db name, username and password are not the same as the example above, make sure to change the below DATABASE_URL ENV variable accordingly:
+  ```bash
+ echo 'export DATABASE_URL=postgres://indigouser:123Password@localhost:5432/indigodb}' >> ~/.bashrc
+ ```
+ Enable the changes to the .bashrc file.
  ```bash
  source ~/.bashrc
  ```
  
  ## Now let's install Indigo
 
- 1. Let's clone into the current Indigo Master Branch:
+ 1. Let's clone into the current Indigo Development Branch:
  ```bash
- git clone https://github.com/laws-africa/indigo
+ git clone --branch v17.2.1 --single-branch https://github.com/laws-africa/indigo
  ```
  
  2. Change into the indigo folder (/root/indigo/)
@@ -204,7 +100,17 @@ su - postgres -c 'createuser -d -P indigo'
  cd indigo
  ```
  
- 3. Install Indigo Python dependencies, including Django 2.2:
+ 3. Make some changes to the settings.py file (/root/indigo/indigo/settings.py):
+ First we are going to enable Emails as Background Tasks:
+ ```bash
+ sed -i "s/'NOTIFICATION_EMAILS_BACKGROUND': False,/'NOTIFICATION_EMAILS_BACKGROUND': True,/" ./indigo/settings.py
+ ```
+ Then we are going to add a switch to allow enabling or disabling TLS in email support:
+ ```bash
+ echo "EMAIL_USE_TLS = os.environ.get('DJANGO_EMAIL_USE_TLS', False)" >> ./indigo/settings.py
+ ```
+ 
+ 4. Install Indigo Python dependencies, including Django:
  ```bash
  pip install -e .
  ```
@@ -219,75 +125,17 @@ su - postgres -c 'createuser -d -P indigo'
 
 ## Configure your Indigo Installation:
 
- 1. Indigo Settings
- 
- Indigo stores it's settings in a Django settings file located at /root/indigo/indigo/settings.py, however since we are already in the /root/indigo folder:
+ 1. Create the initial Database schema:
  ```bash
- nano ./indigo/settings.py
- ```
- This file is reasonably well documented, however I suggest at least enabling Background Emails:
- ```bash
- 'NOTIFICATION_EMAIL_BACKGROUND': True,
- ```
- See later in this tutorial to configure crontab to automate background tasks.
- 
- 2. Create / Update Database Tables
- ```bash
- python manage.py migrate
+ python3 manage.py migrate
  ```
  
- 3. Import Countries and Languages
- ```bash
- python manage.py update_countries_plus
- ```
- ```bash
- python manage.py loaddata languages_data.json.gz
- ```
- 
- 4. Create a Superuser account
- ```bash
- python manage.py createsuperuser
- ```
- 
- 5. Compile static files (Otherwise Gunicorn won't work):
- ```bash
- python manage.py compilescss
- ```
- ```bash
- python manage.py collectstatic --noinput -i docs -i \*scss 2>&1
- ```
- 
- 6. Create SSL Certificates (Could be done with certbot, but would also require changing the Gunicorn String and then requires public facing server):
- ```bash
- openssl req -new -x509 -days 365 -nodes -out /root/server.crt -keyout /root/server.key
- ```
- 
-## Start your Indigo Server using Gunicorn
-
-I use Gunicorn on my LXC deployment which hosts the page internally, publicly it sits behind an NginX reverse proxy so this works for me. Feel free to use NginX along with Gunicorn.
-
-The following script will execute Gunicorn and start listening for https traffic on port 8000 (Note, it must be run from the /root/indigo folder):
-```bash
-gunicorn indigo.wsgi:application -k=gevent -t 600 --certfile=/root/server.crt --keyfile=/root/server.key -b=0.0.0.0:8000 -w=16 --threads 16 --forwarded-allow-ips=* --proxy-allow-from=* --limit-request-line 0
-```
-To understand each of these arguments:
---worker-class or -k : What kind of worker (use gevent)
--t : timeout (use 600ms for now)
---bind or -b : Bind to address:port (use 0.0.0.0:8000)
---workers or -w : How many workers (use 8 - 2x cores)
---threads : How many threads per worker (Use 8 - 2x cores)
--D : Run as daemon (Background Service)
---limit-request-line : Length of request line (set to 0)
-
-You can now connect to your Indigo Server on https://your_ip:8000
-
-### Set your ENV Variables that Indigo requires for development:
- 
- Edit the bashrc file:
+ 2. Pass your specific settings to Indigo via ENV Variables:
+ Edit tha .bashrc file for your user:
  ```bash
  nano ~/.bashrc
  ```
- And add the following fields (The parts in {Curly Brackets} need to match your system, note that AWS S3 is required for storing files
+ Add the following lines, making sure to match your own configuration:
  ```bash
  export DJANGO_DEBUG=false
  export DJANGO_SECRET_KEY={Some Random Characters}
@@ -305,32 +153,109 @@ You can now connect to your Indigo Server on https://your_ip:8000
  export RECAPTCHA_PUBLIC_KEY={Your Google Recaptcha Key}
  export RECAPTCHA_PRIVATE_KEY={Your Google Recaptcha Key}
  export GOOGLE_ANALYTICS_ID={Your Google Analytics ID}
- 
+ export DJANGO_EMAIL_USE_TLS=true
  ```
- Enable this
+ Enable these ENV variables:
  ```bash
  source ~/.bashrc
  ```
+ 
+ 3. Generate some SSL Certificates (Gunicorn and Indigo Production require HTTPS):
+ ```bash
+ openssl req -new -x509 -days 365 -nodes -out /root/server.crt -keyout /root/server.key
+ ```
+ Enter the appropriate settings as you need them.
+ 
+ 2. Import Countries and Languages
+ ```bash
+ python3 manage.py update_countries_plus
+ ```
+ ```bash
+ python3 manage.py loaddata languages_data.json.gz
+ ```
+ 
+ 3. Update the Database with any added Migrations (Our changes to settings.py above):
+ ```bash
+ python3 manage.py makemigrations
+ ```
+ ```bash
+ python3 manage.py migrate
+ ```
+ ```bash
+ 
+ 4. Import available countries from Django-Countries-Plus:
+ ```bash
+ python3 manage.py update_countries_plus
+ ```
+ 
+ 5. Import languages maintained by Indigo:
+ ```bash
+ python3 manage.py loaddata languages_data.json.gz
+ ```
+ 
+ 6. Compile static files for the webserver:
+ ```bash
+ python3 manage.py compilescss
+ ```
+ ```bash
+ python3 manage.py collectstatic --noinput -i docs -i \*scss 2>&1
+ ```
+ 
+ 7. Create a Superuser account
+ ```bash
+ python3 manage.py createsuperuser
+ ```
+ Complete with your superuser settings as you need.
 
-## Use Supervisor to automate server startup (Testing)
+## Run the Produciton Server and complete intial configuration
+
+  1. Start the production server with gunicorn:
+  ```bash
+  gunicorn indigo.wsgi:application -k=gevent -t 600 --certfile=/root/server.crt --keyfile=/root/server.key -b=0.0.0.0:8000 -w=16 --threads 16 --forwarded-allow-ips=* --proxy-allow-from=* --limit-request-line 0
+  ```
+  To understand each of these arguments:
+   --worker-class or -k : What kind of worker (use gevent)
+   -t : timeout (use 600ms for now)
+   --bind or -b : Bind to address:port (use 0.0.0.0:8000)
+   --workers or -w : How many workers (use 8 - 2x cores)
+   --threads : How many threads per worker (Use 8 - 2x cores)
+   -D : Run as daemon (Background Service)
+   --limit-request-line : Length of request line (set to 0)
+  
+  2. Access your development server via http://your-ip:8000
+  
+  3. Login with the superuser account created earlier.
+  
+  4. In the top-right corner click your username and on th edropdown menu select "Site sttings".
+  
+  5. Under the Indigo API section, add a language.
+  
+  6. Also under the Indigo API section, add a country, making sure to select a default language.
+  
+  7. Edit your superuser account and add the country created above as the user's default country.
+
+## Use Supervisor to automate server startup - Testing - Working
 
 Through significant trial and error, some walkthroughs and dumb luck, I managed to get supervisor to autostart gunicorn, so to make this work, do the following:
 
-1. Install Supervisor
+1. Install Supervisor:
 ```bash
-apt update && apt install supervisor -y
+apt update && apt install supervisor --no-install-receommends -y
 ```
-2. Enter the indigo installation folder to create a gunicorn_config file
+
+2. Enter the root folder and create the gunicorn_configuration file that Supervisor will use:
 ```bash
 cd /root
 ```
 ```bash
 touch gunicorn_configuration
 ```
+
+3. Edit the newly created gunicorn_configuration file:
 ```bash
 nano gunicorn_configuration
 ```
-And make it look like this (Substiute folder paths, user and group if you are not using root as per this example):
+And make it look like this (Substiute folder paths, user and group if you are not using root as per this example, make sure your export variables match those used in your ~/.bashrc file, this is necessary for Supervisor which cannot use the ~/.bashrc file):
 ```bash
 #!/bin/bash
 NAME="Indigo"  #Django application name
@@ -343,6 +268,23 @@ LOG_LEVEL=debug
 cd $DIR
 export DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
 export PYTHONPATH=$DIR:$PYTHONPATH
+export DJANGO_DEBUG=false
+export DJANGO_SECRET_KEY={Some Random Characters}
+export AWS_ACCESS_KEY_ID={Your AWS Key}
+export AWS_SECRET_ACCESS_KEY={Your AWS Access ID}
+export AWS_S3_BUCKET={The name of your AWS Bucket}
+export SUPPORT_EMAIL={Your admin email address}
+export DJANGO_DEFAULT_FROM_EMAIL={The email address Indigo will send mail from}
+export DJANGO_EMAIL_HOST={Your SMTP Configaration}
+export DJANGO_EMAIL_HOST_USER={Your SMTP Configaration}
+export DJANGO_EMAIL_HOST_PASSWORD={Your SMTP Configaration}
+export DJANGO_EMAIL_PORT={Your SMTP Configaration}
+export INDIGO_ORGANISATION='{Your Organization Name}'
+export INDIGO_URL={Indogo Official URL}
+export RECAPTCHA_PUBLIC_KEY={Your Google Recaptcha Key}
+export RECAPTCHA_PRIVATE_KEY={Your Google Recaptcha Key}
+export GOOGLE_ANALYTICS_ID={Your Google Analytics ID}
+export DJANGO_EMAIL_USE_TLS=true
 #Command to run the progam under supeperisor
 exec gunicorn --chdir /root/indigo indigo.wsgi:application -k=gevent -t 600 --certfile=/root/server.crt --keyfile=/root/server.key -b=0.0.0.0:8000 -w=16 --threads 16 --forwarded-allow-ips=* --proxy-allow-from=* --limit-request-line 0 --log-level=debug --log-file=-
 ```
@@ -386,7 +328,7 @@ supervisorctl restart indigo
 ```
 And voila, Supervisor will now start your Indigo Gunicorn server at bootup
 
-## Use Crontab to automate background tasks to run (Testing)
+## Use Crontab to automate background tasks to run - Testing - Not Working
 
 Cron is used as an easy solution to run the manage.py process_tasks instruction. If you want to change how often it is done, you can use [crontab guru](https://crontab.guru/) to calculate the timings. To change the duration, the --duration switch is used to stop the task after x seconds. For this example we will run it every 30 minutes with a 60 second duration.
 
@@ -400,12 +342,12 @@ which python
 ```
 Which should return something like:
 ```bash
-/root/.pyenv/shims/python
+/usr/bin/python3
 ```
 3. In our example, Indigo is installed in /root/indigo, so to determine our cron script, it will look like this:
 {Cron Timing} {Python 3 Path} {Indigo Path} {manage.py switches}:
 ```bash
-*/30 * * * * /root/.pyenv/shims/python /root/indigo/manage.py process_tasks --duration 60
+*/30 * * * * /usr/bin/python3 /root/indigo/manage.py process_tasks --duration 60
 ```
 4. Now we simply edit the crontab file with this instruction:
 ```bash
@@ -428,28 +370,18 @@ I am assuming that you are operting from your root folder and not the indigo ins
 ```bash
 supervisorctl stop indigo
 ```
-2. Let's backup our configurations, this will make life easier later:
-```bash
-cp ./indigo/indigo/settings.py settings.py.bak
-```
-```bash
-cp ./indigo/server.crt server.crt.bak
-```
-```bash
-cp ./indigo/server.key server.key.bak
-```
-```bash
-cp ./indigo/gunicorn_configuraton gunicorn_configuration.bak
-```
-3. Now, since the only "custom" data is stored in AWS, your Postgres DB and your settings.py file, we delete the indigo folder:
+
+2. Now, since the only "custom" data is stored in AWS, your Postgres DB and your settings.py file, we delete the indigo folder:
 ```bash
 rm -rf indigo/
 ```
-4. And now we clone the latest version of indigo from GitHub:
+
+3. And now we clone the latest version of indigo from GitHub (Substitute v17.0.0 for the newer one):
 ```bash
-git clone https://github.com/laws-africa/indigo
+git clone --branch v17.0.0 --single-branch https://github.com/laws-africa/indigo
 ```
-5. We need to now install any updated dependencies which is similar to how we originally installed Indigo:
+
+4. We need to now install any updated dependencies which is similar to how we originally installed Indigo:
 ```bash
 cd indigo
 ```
@@ -462,34 +394,16 @@ gem install bundler
 ```bash
 bundle install
 ```
-6. Now we need to reconfigure our settings.py file (With the same settings we used in our initial installation, good thing we made a backup of this file to reference. Don't replace the new settings.py file with the old one, this might break some changes that the developers introduced.
-```bash
-nano ./indigo/settings.py
-```
-And edit the file noting to change the specific settings you did in your initial configuration above. This is important.
-7. Return to the root folder:
-```bash
-cd
-```
-8. Copy back all your backed up files, except settings.py:
-```bash
-cp server.crt.bak ./indigo/server.crt
-```
-```bash
-cp server.key.bak ./indigo/server.key
-```
-```bash
-cp gunicorn_configuration.bak ./indigo/gunicorn_configuration
-```
-9. Go back to the indigo folder:
-```bash
-cd indigo
-```
-10. Make the gunicorn_configuration file executable again:
-```bash
-chmod u+x gunicorn_configuration
-```
-11. Update the relevant database fields and rebuild static files:
+
+5. Now we need to reconfigure our settings.py file (With the same settings we used in our initial installation, good thing we have easy commands to do that:
+ ```bash
+ sed -i "s/'NOTIFICATION_EMAILS_BACKGROUND': False,/'NOTIFICATION_EMAILS_BACKGROUND': True,/" ./indigo/settings.py
+ ```
+ ```bash
+ echo "EMAIL_USE_TLS = os.environ.get('DJANGO_EMAIL_USE_TLS', False)" >> ./indigo/settings.py
+ ```
+
+6. Update the relevant database fields and rebuild static files:
 ```bash
 python manage.py makemigrations
 ```
@@ -508,7 +422,8 @@ python manage.py compilescss
 ```bash
 python manage.py collectstatic --noinput -i docs -i \*scss 2>&1
 ```
-12. Re-enable the supervisor app:
+
+7. Re-enable the supervisor app:
 ```bash
 supervisorctl reread
 ```
@@ -522,10 +437,8 @@ And if all worked well, you now have an up-to-date installation of Indigo.
 
 ## To Do!
 
-1. Automate Gunicorn to start at system boot, no clue how to get this to properly work, if someone could assist here it would be great (Currently testing)
+1. Automate Gunicorn to start at system boot, no clue how to get this to properly work, if someone could assist here it would be great (Currently testing with Supervisor).
 
 2. Updating, while this could work with a simple GIT Fetch, the fact that you NEED to change settings.py makes this more difficult. Will optimize this once I get time. For now I have added manual steps which essentially require reinstalling Indigo from the latest git.
 
-3. Investigate using Python dotenv to parse ENV variables for Indigo from a .env file, this could open the door to a solution that doesn't require modifying settings.py if Laws-Africa would be willing migrate more settings to os.environ.get.
-
- 
+3. Get Backtround Tasks to play along with Cron, not really working as expected.
