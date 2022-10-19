@@ -17,7 +17,6 @@ If you are asking that here, I think you are starting at the wrong place and I s
  5. [Poppler](https://poppler.freedesktop.org/) (PDF Rendering Library)
  7. [Ruby](https://www.ruby.org/) (Another popular Scripting Langauge)
  8. [RBENV](https://github.com/rbenv) (Simplified Ruby Management for Linux)
- 9. [PyEnv](https://github.com/pyenv/pyenv) (Simplified Python Management for Linux)
  10. [Django](https://www.djangoproject.com) (A rich web platform)
  11. [Indigo](https://github.com/laws-africa/indigo) (A specialized document management system)
 
@@ -79,66 +78,17 @@ We should always start on a clean and updated Debian 11 install, as this include
  ```
  Which should show Ruby version 2.7.2
 
-### Install PyEnv and Python 3.7
-
-Due to the requirements of django-background-task, we are limited to Python 3.7.
-
- 1. Install PyEnv
- 
- Use the Curl script:
- ```bash
- curl -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer | bash
- ```
-
- 2. After the installation, rbenv needs some configurations to system ENV, so:
- ```bash
- nano ~/.bashrc
- ```
- and add the following at the end of the file:
- ```bash
- export PYENV_ROOT="$HOME/.pyenv"
- command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
- eval "$(pyenv init -)"
- ```
- 
- 3. Now enable the local ENV Vars:
- ```bash
- source ~/.bashrc
- ```
-
- 4. Test pyenv:
- ```bash
- pyenv -v
- ```
- Which should return your pyenv version
- 
- 5. Install Python 3.6.13
- ```bash
- pyenv install 3.7.13
- ```
- 
- 5. Set Python 3.7.13 as your global Python version:
- ```bash
- pyenv local 3.7.13
- ```
- 
- 6. Test your Python installation:
- ```bash
- python --version
- ```
- Which should show Python version 3.7.13
-
 ### Configure Pythons PIP and install some requirements
 
  1. Update PIP and setuptools:
  ```bash
- pip install --upgrade pip setuptools
+ pip install -U pip setuptools wheel
  ```
  
  2. Install some required PIP Packages:
  
  ```bash
- pip install wheel gevent==21.8.0 gunicorn==20.1.0 psycopg2==2.8.6 django-background-task
+ pip install gevent==21.8.0 gunicorn==20.1.0 psycopg2-binary==2.8.6
  ```
 
  ### Create the postgres database:
@@ -275,7 +225,7 @@ su - postgres -c 'createuser -d -P indigo'
    
  3. Create SSL Certificates (Could be done with certbot, but would also require changing the Gunicorn String and then requires public facing server):
  ```bash
- openssl req -new -x509 -days 365 -nodes -out server.crt -keyout server.key
+ openssl req -new -x509 -days 365 -nodes -out /root/server.crt -keyout /root/server.key
  ```
   
  4. Make necessary changes to database tables (Makemigrations)
@@ -305,7 +255,7 @@ I use Gunicorn on my LXC deployment which hosts the page internally, publicly it
 
 The following script will execute Gunicorn and start listening for https traffic on port 8000 (Note, it must be run from the /root/indigo folder):
 ```bash
-gunicorn indigo.wsgi:application -k=gevent -t 600 --certfile=/root/indigo/server.crt --keyfile=/root/indigo/server.key -b=0.0.0.0:8000 -w=16 --threads 16 --forwarded-allow-ips=* --proxy-allow-from=* --limit-request-line 0
+gunicorn indigo.wsgi:application -k=gevent -t 600 --certfile=/root/server.crt --keyfile=/root/server.key -b=0.0.0.0:8000 -w=16 --threads 16 --forwarded-allow-ips=* --proxy-allow-from=* --limit-request-line 0
 ```
 To understand each of these arguments:
 --worker-class or -k : What kind of worker (use gevent)
@@ -328,7 +278,7 @@ apt update && apt install supervisor -y
 ```
 2. Enter the indigo installation folder to create a gunicorn_config file
 ```bash
-cd /root/indigo
+cd /root
 ```
 ```bash
 touch gunicorn_configuration
@@ -336,7 +286,7 @@ touch gunicorn_configuration
 ```bash
 nano gunicorn_configuration
 ```
-And make it look like this (Substiute folder paths, user and group if you are not using root as per this example):
+And make it look like this (Substiute folder paths, user and group if you are not using root as per this example, make sure your export variables match those used in your ~/.bashrc file, this is necessary for Supervisor which cannot use the ~/.bashrc file):
 ```bash
 #!/bin/bash
 NAME="Indigo"  #Django application name
@@ -349,8 +299,25 @@ LOG_LEVEL=debug
 cd $DIR
 export DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
 export PYTHONPATH=$DIR:$PYTHONPATH
+export PATH="$HOME/.rbenv/bin:$PATH"
+export DJANGO_DEBUG=false
+export DJANGO_SECRET_KEY={Some Random Characters}
+export AWS_ACCESS_KEY_ID={Your AWS Key}
+export AWS_SECRET_ACCESS_KEY={Your AWS Access ID}
+export AWS_S3_BUCKET={The name of your AWS Bucket}
+export SUPPORT_EMAIL={Your admin email address}
+export DJANGO_DEFAULT_FROM_EMAIL={The email address Indigo will send mail from}
+export DJANGO_EMAIL_HOST={Your SMTP Configaration}
+export DJANGO_EMAIL_HOST_USER={Your SMTP Configaration}
+export DJANGO_EMAIL_HOST_PASSWORD={Your SMTP Configaration}
+export DJANGO_EMAIL_PORT={Your SMTP Configaration}
+export INDIGO_ORGANISATION='{Your Organization Name}'
+export INDIGO_URL={Indogo Official URL}
+export RECAPTCHA_PUBLIC_KEY={Your Google Recaptcha Key}
+export RECAPTCHA_PRIVATE_KEY={Your Google Recaptcha Key}
+export GOOGLE_ANALYTICS_ID={Your Google Analytics ID}
 #Command to run the progam under supeperisor
-exec gunicorn --chdir /root/indigo indigo.wsgi:application -k=gevent -t 600 --certfile=/root/indigo/server.crt --keyfile=/root/indigo/server.key -b=0.0.0.0:8000 -w=16 --threads 16 --forwarded-allow-ips=* --proxy-allow-from=* --limit-request-line 0 --log-level=debug --log-file=-
+exec gunicorn --chdir /root/indigo indigo.wsgi:application -k=gevent -t 600 --certfile=/root/server.crt --keyfile=/root/server.key -b=0.0.0.0:8000 -w=16 --threads 16 --forwarded-allow-ips=* --proxy-allow-from=* --limit-request-line 0 --log-level=debug --log-file=-
 ```
 3. Make this file executable:
 ```bash
@@ -373,12 +340,12 @@ nano /etc/supervisor/conf.d/indigo.conf
 And make it look like this:
 ```bash
 [program:indigo]
-command=/root/indigo/gunicorn_configuration
+command=/root/gunicorn_configuration
 user=root
 autostart=true
 autorestart=true
 redirect_stderr=true
-stdout_logfile=/root/indigo/gunicorn-error.log
+stdout_logfile=/root/gunicorn-error.log
 ```
 6. Enable and start your new Supervisor app:
 ```bash
