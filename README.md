@@ -30,7 +30,7 @@ We should always start on a clean and updated Debian 11 install, as this include
  
  2. Install the prerequisite packages from apt:
  ```bash
- apt install git build-essential poppler-utils fontconfig xfonts-base xfonts-75dpi postgresql ruby ruby-dev python3-pip python3-dev ghostscript --no-install-recommends
+ apt install git build-essential poppler-utils fontconfig xfonts-base xfonts-75dpi postgresql ruby ruby-dev python3-pip python3-dev ghostscript --no-install-recommends -y
  ```
  
  3. Install WKHTMLtoPDF
