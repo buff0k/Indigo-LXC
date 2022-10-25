@@ -102,11 +102,11 @@ We should always start on a clean and updated Debian 11 install, as this include
  ```
  To enable TLS:
  ```bash
- sed "/^EMAIL_PORT = int(os.environ.get('DJANGO_EMAIL_PORT', 25))/a EMAIL_USE_TLS = True" ./indigo/settings.py
+ sed -i "/^EMAIL_PORT = int(os.environ.get('DJANGO_EMAIL_PORT', 25))/a EMAIL_USE_TLS = True" ./indigo/settings.py
  ```
  To enable SSL:
  ```bash
- sed "/^EMAIL_PORT = int(os.environ.get('DJANGO_EMAIL_PORT', 25))/a EMAIL_USE_SSL = True" ./indigo/settings.py
+ sed -i "/^EMAIL_PORT = int(os.environ.get('DJANGO_EMAIL_PORT', 25))/a EMAIL_USE_SSL = True" ./indigo/settings.py
  ```
  
  4. Install Indigo Python dependencies, including Django:
