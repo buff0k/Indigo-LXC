@@ -95,9 +95,18 @@ We should always start on a clean and updated Debian 11 install, as this include
  ```bash
  sed -i "s/'NOTIFICATION_EMAILS_BACKGROUND': False,/'NOTIFICATION_EMAILS_BACKGROUND': True,/" ./indigo/settings.py
  ```
- Then we are going to add a switch to allow enabling or disabling TLS in email support:
+ If relevant to you, enable TLS or SSL by running either of these commands:
+ To rely on ENV variable - Testing
  ```bash
  echo "EMAIL_USE_TLS = os.environ.get('DJANGO_EMAIL_USE_TLS', False)" >> ./indigo/settings.py
+ ```
+ To enable TLS:
+ ```bash
+ sed "/^EMAIL_PORT = int(os.environ.get('DJANGO_EMAIL_PORT', 25))/a EMAIL_USE_TLS = True" ./indigo/settings.py
+ ```
+ To enable SSL:
+ ```bash
+ sed "/^EMAIL_PORT = int(os.environ.get('DJANGO_EMAIL_PORT', 25))/a EMAIL_USE_SSL = True" ./indigo/settings.py
  ```
  
  4. Install Indigo Python dependencies, including Django:
