@@ -117,13 +117,13 @@ We should always start on a clean and updated Debian 11 install, as this include
  4, Install Indigo Ruby dependencies:
  First we need to fix the Gemfile and Gemfile.lock due to an issue with incorrect slaw version:
  ```bash
- RUN sed -i "s/slaw (12.0.0)/slaw (13.0.0)/" ./Gemfile.lock
+ sed -i "s/slaw (12.0.0)/slaw (13.0.0)/" ./Gemfile.lock
  ```
  ```bash
- RUN sed -i "s/slaw (~> 12.0)/slaw (~> 13.0)/" ./Gemfile.lock
+ sed -i "s/slaw (~> 12.0)/slaw (~> 13.0)/" ./Gemfile.lock
  ```
  ```bash
- RUN sed -i "s/gem 'slaw', '~> 12.0'/gem 'slaw', '~> 13.0'/" ./Gemfile
+ sed -i "s/gem 'slaw', '~> 12.0'/gem 'slaw', '~> 13.0'/" ./Gemfile
  ```
  Then install the gems necessary for Indigo:
  ```bash
