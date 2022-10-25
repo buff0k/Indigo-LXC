@@ -191,19 +191,8 @@ We should always start on a clean and updated Debian 11 install, as this include
  ```bash
  python3 manage.py migrate
  ```
- ```bash
  
- 4. Import available countries from Django-Countries-Plus:
- ```bash
- python3 manage.py update_countries_plus
- ```
- 
- 5. Import languages maintained by Indigo:
- ```bash
- python3 manage.py loaddata languages_data.json.gz
- ```
- 
- 6. Compile static files for the webserver:
+ 4. Compile static files for the webserver:
  ```bash
  python3 manage.py compilescss
  ```
@@ -211,7 +200,7 @@ We should always start on a clean and updated Debian 11 install, as this include
  python3 manage.py collectstatic --noinput -i docs -i \*scss 2>&1
  ```
  
- 7. Create a Superuser account
+ 5. Create a Superuser account
  ```bash
  python3 manage.py createsuperuser
  ```
@@ -250,7 +239,7 @@ Through significant trial and error, some walkthroughs and dumb luck, I managed 
 
 1. Install Supervisor:
 ```bash
-apt update && apt install supervisor --no-install-receommends -y
+apt update && apt install supervisor --no-install-recommends -y
 ```
 
 2. Enter the root folder and create the gunicorn_configuration file that Supervisor will use:
