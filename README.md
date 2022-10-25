@@ -96,10 +96,6 @@ We should always start on a clean and updated Debian 11 install, as this include
  sed -i "s/'NOTIFICATION_EMAILS_BACKGROUND': False,/'NOTIFICATION_EMAILS_BACKGROUND': True,/" ./indigo/settings.py
  ```
  If relevant to you, enable TLS or SSL by running either of these commands:
- To rely on ENV variable - Testing
- ```bash
- echo "EMAIL_USE_TLS = os.environ.get('DJANGO_EMAIL_USE_TLS', False)" >> ./indigo/settings.py
- ```
  To enable TLS:
  ```bash
  sed -i "/^EMAIL_PORT = int(os.environ.get('DJANGO_EMAIL_PORT', 25))/a EMAIL_USE_TLS = True" ./indigo/settings.py
@@ -163,7 +159,6 @@ We should always start on a clean and updated Debian 11 install, as this include
  export RECAPTCHA_PUBLIC_KEY={Your Google Recaptcha Key}
  export RECAPTCHA_PRIVATE_KEY={Your Google Recaptcha Key}
  export GOOGLE_ANALYTICS_ID={Your Google Analytics ID}
- export DJANGO_EMAIL_USE_TLS=true
  ```
  Enable these ENV variables:
  ```bash
@@ -283,7 +278,6 @@ export INDIGO_URL={Indogo Official URL}
 export RECAPTCHA_PUBLIC_KEY={Your Google Recaptcha Key}
 export RECAPTCHA_PRIVATE_KEY={Your Google Recaptcha Key}
 export GOOGLE_ANALYTICS_ID={Your Google Analytics ID}
-export DJANGO_EMAIL_USE_TLS=true
 #Command to run the progam under supeperisor
 exec gunicorn --chdir /root/indigo indigo.wsgi:application -k=gevent -t 600 --certfile=/root/server.crt --keyfile=/root/server.key -b=0.0.0.0:8000 -w=16 --threads 16 --forwarded-allow-ips=* --proxy-allow-from=* --limit-request-line 0 --log-level=debug --log-file=-
 ```
