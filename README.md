@@ -81,7 +81,7 @@ We should always start on a clean and updated Debian 11 install, as this include
  
  If your db name, username and password are not the same as the example above, make sure to change the below DATABASE_URL ENV variable accordingly:
   ```bash
- echo 'export DATABASE_URL=postgres://indigouser:123Password@localhost:5432/indigodb}' >> ~/.bashrc
+ echo 'export DATABASE_URL=postgres://indigouser:123Password@localhost:5432/indigodb' >> ~/.bashrc
  ```
  Enable the changes to the .bashrc file.
  ```bash
