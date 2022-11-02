@@ -106,10 +106,6 @@ We should always start on a clean and updated Debian 11 install, as this include
  sed -i "s/'NOTIFICATION_EMAILS_BACKGROUND': False,/'NOTIFICATION_EMAILS_BACKGROUND': True,/" ./indigo/settings.py
  ```
  If relevant to you, enable TLS or SSL by running either of these commands:
- To rely on ENV variable - Testing
- ```bash
- echo "EMAIL_USE_TLS = os.environ.get('DJANGO_EMAIL_USE_TLS', False)" >> ./indigo/settings.py
- ```
  To enable TLS:
  ```bash
  sed -i "/^EMAIL_PORT = int(os.environ.get('DJANGO_EMAIL_PORT', 25))/a EMAIL_USE_TLS = True" ./indigo/settings.py
@@ -192,17 +188,7 @@ We should always start on a clean and updated Debian 11 install, as this include
  ```
  ```bash
  
- 4. Import available countries from Django-Countries-Plus:
- ```bash
- python3 manage.py update_countries_plus
- ```
- 
- 5. Import languages maintained by Indigo:
- ```bash
- python3 manage.py loaddata languages_data.json.gz
- ```
- 
- 6. Compile static files for the webserver:
+ 4. Compile static files for the webserver:
  ```bash
  python3 manage.py compilescss
  ```
@@ -210,7 +196,7 @@ We should always start on a clean and updated Debian 11 install, as this include
  python3 manage.py collectstatic --noinput -i docs -i \*scss 2>&1
  ```
  
- 7. Create a Superuser account
+ 5. Create a Superuser account
  ```bash
  python3 manage.py createsuperuser
  ```
@@ -363,9 +349,28 @@ Which should return something like:
 crontab -e
 ```
 And select nano as editor.
+We now need to pass our Environment variables to cron, so at the top of the file add the configuration from your .bashrc and gunicorn_config files:
+```bash
+DJANGO_DEBUG=false
+DJANGO_SECRET_KEY={Some Random Characters}
+AWS_ACCESS_KEY_ID={Your AWS Key}
+AWS_SECRET_ACCESS_KEY={Your AWS Access ID}
+AWS_S3_BUCKET={The name of your AWS Bucket}
+SUPPORT_EMAIL={Your admin email address}
+DJANGO_DEFAULT_FROM_EMAIL={The email address Indigo will send mail from}
+DJANGO_EMAIL_HOST={Your SMTP Configaration}
+DJANGO_EMAIL_HOST_USER={Your SMTP Configaration}
+DJANGO_EMAIL_HOST_PASSWORD={Your SMTP Configaration}
+DJANGO_EMAIL_PORT={Your SMTP Configaration}
+INDIGO_ORGANISATION='{Your Organization Name}'
+INDIGO_URL={Indogo Official URL}
+RECAPTCHA_PUBLIC_KEY={Your Google Recaptcha Key}
+RECAPTCHA_PRIVATE_KEY={Your Google Recaptcha Key}
+GOOGLE_ANALYTICS_ID={Your Google Analytics ID}
+```
 At the bottom of the file we add our expression, from the start of this step:
 ```bash
-*/30 * * * * /root/.pyenv/shims/python /root/indigo/manage.py process_tasks --duration 60
+*/30 * * * * /usr/bin/python3 /root/indigo/manage.py process_tasks --duration 60
 ```
 Save the file with ctrl+x and enter.
 
