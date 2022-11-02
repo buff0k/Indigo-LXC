@@ -347,6 +347,25 @@ Which should return something like:
 crontab -e
 ```
 And select nano as editor.
+We now need to pass our Environment variables to cron, so at the top of the file add the configuration from your .bashrc and gunicorn_config files:
+```bash
+DJANGO_DEBUG=false
+DJANGO_SECRET_KEY={Some Random Characters}
+AWS_ACCESS_KEY_ID={Your AWS Key}
+AWS_SECRET_ACCESS_KEY={Your AWS Access ID}
+AWS_S3_BUCKET={The name of your AWS Bucket}
+SUPPORT_EMAIL={Your admin email address}
+DJANGO_DEFAULT_FROM_EMAIL={The email address Indigo will send mail from}
+DJANGO_EMAIL_HOST={Your SMTP Configaration}
+DJANGO_EMAIL_HOST_USER={Your SMTP Configaration}
+DJANGO_EMAIL_HOST_PASSWORD={Your SMTP Configaration}
+DJANGO_EMAIL_PORT={Your SMTP Configaration}
+INDIGO_ORGANISATION='{Your Organization Name}'
+INDIGO_URL={Indogo Official URL}
+RECAPTCHA_PUBLIC_KEY={Your Google Recaptcha Key}
+RECAPTCHA_PRIVATE_KEY={Your Google Recaptcha Key}
+GOOGLE_ANALYTICS_ID={Your Google Analytics ID}
+```
 At the bottom of the file we add our expression, from the start of this step:
 ```bash
 */30 * * * * /root/.pyenv/shims/python /root/indigo/manage.py process_tasks --duration 60
