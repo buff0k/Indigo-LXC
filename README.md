@@ -1,4 +1,4 @@
-# Indigo Debian/LXC - Testing
+# Indigo Debian/LXC - 17.2.0 - Testing
 
 How to install [Laws-Africa/Indigo](https://github.com/laws-africa/indigo) in an Debian 11 LXC Container. Note this will install development (17.2.0) version from the repo. Note these steps will also work for a bare-metal Debian 11 installation.
 
