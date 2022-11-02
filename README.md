@@ -368,7 +368,7 @@ GOOGLE_ANALYTICS_ID={Your Google Analytics ID}
 ```
 At the bottom of the file we add our expression, from the start of this step:
 ```bash
-*/30 * * * * /root/.pyenv/shims/python /root/indigo/manage.py process_tasks --duration 60
+*/30 * * * * /usr/bin/python3 /root/indigo/manage.py process_tasks --duration 60
 ```
 Save the file with ctrl+x and enter.
 
