@@ -260,6 +260,7 @@ DJANGO_SETTINGS_MODULE=indigo.settings   #Which Django setting file should use
 DJANGO_WSGI_MODULE=indigo.wsgi           #Which WSGI file should use
 LOG_LEVEL=debug
 cd $DIR
+export DATABASE_URL=postgres://indigouser:123Password@localhost:5432/indigodb
 export DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
 export PYTHONPATH=$DIR:$PYTHONPATH
 export DJANGO_DEBUG=false
@@ -349,6 +350,7 @@ crontab -e
 And select nano as editor.
 We now need to pass our Environment variables to cron, so at the top of the file add the configuration from your .bashrc and gunicorn_config files:
 ```bash
+DATABASE_URL=postgres://indigouser:123Password@localhost:5432/indigodb
 DJANGO_DEBUG=false
 DJANGO_SECRET_KEY={Some Random Characters}
 AWS_ACCESS_KEY_ID={Your AWS Key}
