@@ -1,6 +1,6 @@
-# Indigo Debian/LXC - 17.2.1 - Testing
+# Indigo Debian/LXC - 18.0.0 - Testing
 
-How to install [Laws-Africa/Indigo](https://github.com/laws-africa/indigo) in an Debian 11 LXC Container. Note this will install development (17.2.1) version from the repo. Note these steps will also work for a bare-metal Debian 11 installation.
+How to install [Laws-Africa/Indigo](https://github.com/laws-africa/indigo) in an Debian 11 LXC Container. Note this will install development (18.0.0) version from the repo. Note these steps will also work for a bare-metal Debian 11 installation.
 
 All credit and atribution to [Laws-Africa](https://github.com/laws-africa/) for their excellent work on the Indigo Platform.
 
@@ -13,14 +13,13 @@ If you are asking that here, I think you are starting at the wrong place and I s
  1. [Debian](https://www.debian.org/) 11 (GNU/Linux OS)
  2. [Postgres](https://www.postgresql.org/) (Database Server)
  3. [Python3](https://www.python.org/) (Scripting Language)
- 4. [WKHMTLtoPDF](https://wkhtmltopdf.org/) (PDF Creation - Not currently working)
+ 4. [Apache FOP](https://xmlgraphics.apache.org/fop/)) (PDF Creation)
  5. [Poppler](https://poppler.freedesktop.org/) (PDF Rendering Library)
- 7. [Ruby](https://www.ruby.org/) (Another popular Scripting Langauge)
- 8. [Django](https://www.djangoproject.com) (A rich web platform)
- 9. [Indigo](https://github.com/laws-africa/indigo) (A specialized document management system)
- 10. [NodJS](https://nodejs.org) (A JavaScript Runtime)
- 11. [NPM](https://www.npmjs.com) (Java Pacakge Repo)
- 12. [SASS](https://sass-lang.com) (CSS Extension Language)
+ 6. [Django](https://www.djangoproject.com) (A rich web platform)
+ 7. [Indigo](https://github.com/laws-africa/indigo) (A specialized document management system)
+ 8. [NodJS](https://nodejs.org) (A JavaScript Runtime)
+ 9. [NPM](https://www.npmjs.com) (Java Pacakge Repo)
+ 10. [SASS](https://sass-lang.com) (CSS Extension Language)
 
 ## Getting started
 
@@ -33,15 +32,7 @@ We should always start on a clean and updated Debian 11 install, as this include
  
  2. Install the prerequisite packages from apt:
  ```bash
- apt install git build-essential poppler-utils fontconfig xfonts-base xfonts-75dpi postgresql ruby ruby-dev python3-pip python3-dev nodejs npm ghostscript --no-install-recommends
- ```
- 
- 3. Install WKHTMLtoPDF
- ```bash
- wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-2/wkhtmltox_0.12.6.1-2.bullseye_amd64.deb
- ```
- ```bash
- dpkg -i wkhtmltox_0.12.6.1-2.bullseye_amd64.deb
+ apt install git build-essential poppler-utils fop postgresql python3-pip python3-dev nodejs npm --no-install-recommends
  ```
  
 ## Configure Pythons pip and install some requirements
@@ -92,7 +83,7 @@ We should always start on a clean and updated Debian 11 install, as this include
 
  1. Let's clone into the current Indigo Development Branch:
  ```bash
- git clone --branch v17.2.1 --single-branch https://github.com/laws-africa/indigo
+ git clone https://github.com/laws-africa/indigo
  ```
  
  2. Change into the indigo folder (/root/indigo/)
@@ -105,27 +96,10 @@ We should always start on a clean and updated Debian 11 install, as this include
  ```bash
  sed -i "s/'NOTIFICATION_EMAILS_BACKGROUND': False,/'NOTIFICATION_EMAILS_BACKGROUND': True,/" ./indigo/settings.py
  ```
- If relevant to you, enable TLS or SSL by running either of these commands:
- To enable TLS:
- ```bash
- sed -i "/^EMAIL_PORT = int(os.environ.get('DJANGO_EMAIL_PORT', 25))/a EMAIL_USE_TLS = True" ./indigo/settings.py
- ```
- To enable SSL:
- ```bash
- sed -i "/^EMAIL_PORT = int(os.environ.get('DJANGO_EMAIL_PORT', 25))/a EMAIL_USE_SSL = True" ./indigo/settings.py
- ```
  
  4. Install Indigo Python dependencies, including Django:
  ```bash
  pip install -e .
- ```
- 
- 4, Install Indigo Ruby dependencies:
- ```bash
- gem install bundler
- ```
- ```bash
- bundle install
  ```
 
 ## Configure your Indigo Installation:
