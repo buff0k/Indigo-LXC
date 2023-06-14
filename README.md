@@ -160,7 +160,6 @@ We should always start on a clean and updated Debian 11 install, as this include
  ```bash
  python3 manage.py migrate
  ```
- ```bash
  
  4. Compile static files for the webserver:
  ```bash
